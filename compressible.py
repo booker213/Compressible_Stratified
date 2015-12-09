@@ -26,9 +26,9 @@ n = FacetNormal(mesh)
 #un = 0.5*(dot(u0, n) + abs(dot(u0, n)))
 
 #Set up boundary conditions
-
-bcv_x = DirichletBC(W.sub(0).sub(0), Constant(0), 1, method="geometric")
-bcv_z = DirichletBC(W.sub(0).sub(1), Constant(0), 1, method="geometric")
+for i in range(1,4):
+   bcv_x = DirichletBC(W.sub(0).sub(0), Constant(0), i, method="geometric")
+   bcv_z = DirichletBC(W.sub(0).sub(1), Constant(0), i, method="geometric")
 
 #outfile = File("./Results/compressible.pvd")
 
