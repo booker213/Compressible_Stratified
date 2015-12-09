@@ -1,0 +1,9 @@
+errors:
+
+dispersion relation:
+
+Traceback (most recent call last):
+  File "compressible.py", line 51, in <module>
+    omega = Expression(sqrt(0.5*(8*pow(pi,2)+0.25*pow((N+1),2) + sqrt( pow((8*(pi,2) + 0.25*pow((N+1),2)),2) - 16* (pi,2) *N))))#Dispersion relation fix later
+TypeError: can only concatenate tuple (not "float") to tuple
+
