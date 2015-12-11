@@ -37,6 +37,9 @@ W =  V*R*P
 (u,r,p) = TrialFunctions(W) # Velocity, density, pressure respectively
 (phi, xi, sigma) = TestFunctions(W) # Test functions for velocity, density, pressure respectively
 
+#Function Space for initial conditions
+w_ = Function(W)
+(u_, r_, p_) = w_.split()
 
 #Set up element normal
 n = FacetNormal(mesh)
@@ -47,7 +50,7 @@ for i in range(1,4):
    bcu_z_i = DirichletBC(W.sub(0).sub(0), Constant(0), i, method="geometric")
    bcu_x_i = DirichletBC(W.sub(0).sub(1), Constant(0), i, method="geometric")
 
-#outfile = File("./Results/compressible.pvd")
+
 
 #Define Poisson Bracket
 #Possibly as a python definition
@@ -57,16 +60,23 @@ def Poisson_Bracket(velocity, density, pressure):
 
 
 # Define exact solution
-# should really define 2pi as a constant
 #omega = Expression(sqrt(0.5*(8*pow(pi,2)+0.25*pow((N+1),2) + sqrt( pow((8*(pi,2) + 0.25*pow((N+1),2)),2) - 16* (pi,2) *N))))
 #Dispersion relation fix later
 #Current approach does not work
 #Externally determine dispersion relation and insert as constant may be appropiate for now
 omega = 1.0
-exact_u = Expression( " exp( -0.5*( N + 1 )*x[1] )* ( 2 * pi/( 4 * pi^2 - omega^2)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1]*sin (omega * t + 0.1)" )
-exact_w =  Expression( " exp( -0.5*( N + 1 )*x[1] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega *t + 0.1)" )
-exact_r = Expression( " exp( -0.5*( N + 1 )*x[1] )*(omega / ( 4*pi^2 - omega^2))*( ( 0.5*(N + 1) - (4*pi^2*N/omega^2))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega * t +0.1) " )
-exact_p = Expression( " exp( -0.5*( N + 1 )*x[1] )*(omega / ( 4*pi^2 - omega^2))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))cos(2*pi*x[1])*cos(omega * t + 0.1) ")
+exact_u = Expression( " exp( -0.5*( N + 1 )*x[1] )* ( 2 * pi/( 4 * pi^2 - omega^2)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1]*sin (omega * t + 0.1)" , t=t)
+exact_w =  Expression( " exp( -0.5*( N + 1 )*x[1] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega *t + 0.1)" , t=t)
+exact_r = Expression( " exp( -0.5*( N + 1 )*x[1] )*(omega / ( 4*pi^2 - omega^2))*( ( 0.5*(N + 1) - (4*pi^2*N/omega^2))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega * t +0.1) " , t=t)
+exact_p = Expression( " exp( -0.5*( N + 1 )*x[1] )*(omega / ( 4*pi^2 - omega^2))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))cos(2*pi*x[1])*cos(omega * t + 0.1) ", t=t)
+
+#Define initial conditions
+r_.interpolate(exact_r)
+p_.interpolate(exact_p)
+u_.sub(0).interpolate(exact_w)
+u_.sub(1).interpolate(exact_u)
+
+
 
 # Create linear problem
 # a =   ( u*phi + r*xi + p* sigma)*dx - 0.5*dt*Poisson_Bracket( u , r , p )
