@@ -2,7 +2,7 @@ from firedrake import *
 
 #Create Mesh
 m = 16
-mesh = UnitSquareMesh(m, m)
+mesh = UnitSquareMesh(m, m,  quadrilateral=quadrilateral)
 order_basis = 0 
 
 # Note x[0] = z
@@ -13,7 +13,7 @@ order_basis = 0
 # Currently replicating Sanders' work
 dt = Constant (1/16)
 t = 0.0
-end = 1
+end_time  = Constant(1/16)
 
 #Define Constants
 c_0 = Constant(1) # Speed of sound
@@ -23,8 +23,6 @@ theta = Constant(0.5) # Alternating Flux
 #Future make theta differ in elements, hopefully with a random seeding
 #Theta \in [ 0.1 , 0.9 ] would be a preferable range.
 
-# Define Background Density
-r_0 = Expression( "exp(-3.0*x[0]" )
 
 #Define Function Spaces
 
@@ -32,6 +30,14 @@ V = VectorFunctionSpace(mesh, "DG", order_basis) # Dim of VFS = dim mesh, unless
 R = FunctionSpace(mesh, "DG", order_basis)
 P = FunctionSpace(mesh, "DG", order_basis)
 W =  V*R*P
+
+# Define Background Density
+#r_0_expression = Expression( "exp(-3.0*x[0])" )
+r_0_expression = Expression( "1.0" )
+# Project onto Finite element space
+# so we can use it in variational forms
+r_0 = Function(R)
+r_0.interpolate(r_0_expression)
 
 #Define trial and test functions
 (u,r,p) = TrialFunctions(W) # Velocity, density, pressure respectively
@@ -46,16 +52,31 @@ n = FacetNormal(mesh)
 
 
 #Set up boundary conditions
-for i in range(1,4):
-   bcu_z_i = DirichletBC(W.sub(0).sub(0), Constant(0), i, method="geometric")
-   bcu_x_i = DirichletBC(W.sub(0).sub(1), Constant(0), i, method="geometric")
+#no normal flow
+# ids 1,2 correspond to z=0, z=1
+# reminder that cartesians are rotated 90 deg
+#           x=1
+#     |-------------|
+#  z  |             | z
+#  =  |             | = 
+#  0  |             | 1
+#     |             |
+#     |-------------|
+#          x = 0
+bcu_z_1 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 1, method="geometric")
+bcu_z_2 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 2, method="geometric")
+
+# ids 3,4 correspond to x=0, x=1
+
+bcu_x_1 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 3, method="geometric")
+bcu_x_2 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 4, method="geometric")
 
 
 
 #Define Poisson Bracket
 #Possibly as a python definition
 def Poisson_Bracket(velocity, density, pressure):
-   print end
+   print "blank atm"
 
 
 
@@ -65,19 +86,30 @@ def Poisson_Bracket(velocity, density, pressure):
 #Current approach does not work
 #Externally determine dispersion relation and insert as constant may be appropiate for now
 omega = 1.0
-exact_u = Expression( " exp( -0.5*( N + 1 )*x[1] )* ( 2 * pi/( 4 * pi^2 - omega^2)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1]*sin (omega * t + 0.1)" , t=t)
-exact_w =  Expression( " exp( -0.5*( N + 1 )*x[1] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega *t + 0.1)" , t=t)
-exact_r = Expression( " exp( -0.5*( N + 1 )*x[1] )*(omega / ( 4*pi^2 - omega^2))*( ( 0.5*(N + 1) - (4*pi^2*N/omega^2))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega * t +0.1) " , t=t)
-exact_p = Expression( " exp( -0.5*( N + 1 )*x[1] )*(omega / ( 4*pi^2 - omega^2))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))cos(2*pi*x[1])*cos(omega * t + 0.1) ", t=t)
+#exact_u = Expression( " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega * t + 0.1)" , t=t)
+#exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega *t + 0.1)" , t=t)
+#exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega * t +0.1) " , t=t)
+#exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos(omega * t + 0.1) ", t=t)
+
+exact_u = Expression ("1.0")
+exact_w = Expression ("1.0")
+exact_r = Expression ("1.0")
+exact_p = Expression ("1.0")
 
 #Define initial conditions
 r_.interpolate(exact_r)
 p_.interpolate(exact_p)
-u_.sub(0).interpolate(exact_w)
-u_.sub(1).interpolate(exact_u)
+#u_.sub(0).interpolate(exact_w)
+#u_.sub(1).interpolate(exact_u)
+u_.interpolate(Expression(["1.0", "1.0"]))
+## u_.interpolate(Expression([component_0, component_1]))
+# Lawrence fix
+# Interpolation to indexed pieces of a VFS is not currently implemented.
 
+#Initial Energy
+#E_0 = assemble( (0.5*inner((u_),(u_))/r_0 + 0.5*pow(g,2)*pow(( r_ - p_/c_0),2)/(r_0*N) + 0.5* pow(p_,2)/(r_0*c_0))*dx )
 
-
+#print E_0
 # Create linear problem
 # a =   ( u*phi + r*xi + p* sigma)*dx - 0.5*dt*Poisson_Bracket( u , r , p )
 # L =   ( u_*phi + r_*xi + p_* sigma)*dx + 0.5*dt*Poisson_Bracket( u_ , r_ , p_ )
@@ -89,6 +121,14 @@ u_u_file = File('./Results/u_u.pvd')
 u_w_file = File('./Results/u_w.pvd')
 density_file = File('./Results/density.pvd')
 pressure_file = File('./Results/pressure.pvd')
+
+# output initial conditions
+# output does not currently work
+# issue must be the initial conditions 
+#density_file << r_
+#pressure_file << p_
+u_w_file << u_
+#u_u_file << u_.sub(1)
 
 out=Function(W)
 
@@ -111,4 +151,4 @@ out=Function(W)
 
 #Compile test
 #remove later on
-print t,"Seems to have worked"
+print t ,"Seems to have worked"

@@ -1,19 +1,5 @@
-errors:
-
-dispersion relation:
-
-Traceback (most recent call last):
-  File "compressible.py", line 51, in <module>
-    omega = Expression(sqrt(0.5*(8*pow(pi,2)+0.25*pow((N+1),2) + sqrt( pow((8*(pi,2) + 0.25*pow((N+1),2)),2) - 16* (pi,2) *N))))#Dispersion relation fix later
-TypeError: can only concatenate tuple (not "float") to tuple
-
-
-
-plot initial conditions:
-
-Traceback (most recent call last):
-  File "compressible.py", line 103, in <module>
-    density_file << r_
+  File "compressible.py", line 113, in <module>
+    u_w_file << u_
   File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/io.py", line 110, in __lshift__
     self._file << data
   File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/io.py", line 524, in __lshift__
@@ -59,15 +45,15 @@ Traceback (most recent call last):
     obj.__init__(*args, **kwargs)
   File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 687, in __init__
     self.compile()
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 785, in compile
-    compiler=compiler.get('name'))
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/compilation.py", line 270, in load
-    dll = compiler.get_so(src, extension)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/compilation.py", line 139, in get_so
-    Original error: %s""" % (cc, logfile, errfile, e))
-pyop2.exceptions.CompilationError: Command "['mpicc', '-std=c99', '-fPIC', '-Wall', '-g', '-O3', '-fno-tree-vectorize', '-I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/include', '-I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2', '-msse', '-o', '/tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.so.tmp', '/tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.c', '-shared', '-L/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib', '-Wl,-rpath,/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib', '-lpetsc', '-lm']" returned with error.
-Unable to compile code
-Compile log in /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.log
-Compile errors in /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.err
-Original error: status 1 invoking 'mpicc -std=c99 -fPIC -Wall -g -O3 -fno-tree-vectorize -I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/include -I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2 -msse -o /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.so.tmp /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.c -shared -L/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib -Wl,-rpath,/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib -lpetsc -lm'
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 735, in compile
+    code_to_compile = strip(dedent(self._wrapper) % self.generate_code())
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 1000, in generate_code
+    for i, j, shape, offsets in self._itspace])}
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 931, in itset_loop_body
+    _buf_scatter[arg] = arg.c_buffer_scatter_vec(count, i, j, offsets, _buf_name[arg])
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 646, in c_buffer_scatter_vec
+    for o in range(dim)])
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 157, in c_kernel_arg
+    raise NotImplementedError("Indirect DatView not implemented")
+NotImplementedError: Indirect DatView not implemented
 
