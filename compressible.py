@@ -135,7 +135,7 @@ out=Function(W)
 #while (t <= end):
 
 
-#solve(a == L, out, bcs=[bcv_x_1,bcv_x_2,bcv_x_3,bcv_x_4,bcv_z_1,bcv_z_2,bcv_z_3,bcv_z_4])
+#solve(a == L, out, bcs=[bcv_x_1,bcv_x_2,bcv_z_1,bcv_z_2])
 #velocity, density, pressure = out.split( )
 
 #density_file << density
