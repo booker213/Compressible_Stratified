@@ -85,6 +85,8 @@ def Poisson_Bracket(velocity, density, pressure):
 #Dispersion relation fix later
 #Current approach does not work
 #Externally determine dispersion relation and insert as constant may be appropiate for now
+# Matlab value
+# omega =  8.900185996715988
 omega = 1.0
 #exact_u = Expression( " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega * t + 0.1)" , t=t)
 #exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega *t + 0.1)" , t=t)
