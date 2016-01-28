@@ -1,11 +1,11 @@
 clc 
 clear all
-
+format long
 % mesh constants
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=5;
+Nx=7;
 Nz=5;
 k= Nx*Nz;
 k4 = 4*k;
@@ -19,7 +19,7 @@ theta = 0.5;
 % theta = repmat( theta_, 4);
 
 % Storage for inital density and density gradient
-r_000=zeros(Nx, Nz);
+r_000=zeros(Nz, Nx);
 r_00 = zeros(k,0);
 r_0 = zeros(k4,0);
 dr_0=zeros(k4, 0);
@@ -30,10 +30,10 @@ F = zeros(k4, k4 );
 PB = zeros(k4, k4 );
 P = zeros(k4, k4 );
 Q = zeros(k4, k4 );
-uu_initial = zeros(Nx, Nz);
-uw_initial = zeros(Nx, Nz);
-r_initial = zeros(Nx, Nz);
-p_initial = zeros(Nx, Nz);
+uu_initial = zeros(Nz, Nx);
+uw_initial = zeros(Nz, Nx);
+r_initial = zeros(Nz, Nx);
+p_initial = zeros(Nz, Nx);
 % mesh information
 x_nodes = linspace(a,Lx,Nx+1);
 z_nodes = linspace(a,Lz,Nz+1);
@@ -47,7 +47,7 @@ z_centres = a+dz/2 : dz : Lz;
 
 [X,Z] = meshgrid(x_centres, z_centres);
 
-sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2)));
+sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2)))
 
 % Background density 
 r_000 = exp(-3.*Z);
@@ -61,18 +61,23 @@ r_000 = exp(-3.*Z);
 % end
 % r_0 = repmat(r_00,4);
 % dr_0 = -3*r_0;
-
+% matlab matrix (columns, rows)
 % Exact Solution 
-uu_initial = exp(-0.5*(N + 1).*Z)*(2*pi/(4*pi^2 - sigma^2))*( -2*pi*cos(2*pi.*Z) - (N-1)*0.5*sin(2*pi.*Z))*sin(2*pi.*X)*sin(sigma*t+0.1);
-uw_initial = exp(-0.5*(N + 1).*Z)*sin(2*pi.*Z)*cos(2*pi.*X)*sin(sigma*t+0.1);
-r_initial = exp(-0.5*(N + 1).*Z)*(sigma/(4*pi^2-sigma^2))*((0.5*(N+1)-4*pi^2*N/sigma^2)*sin(2*pi.*Z)-2*pi*cos(2*pi.*Z))*cos(2*pi.*X)*cos(sigma*t+0.1);
-p_initial = exp(-0.5*(N + 1).*Z)*(sigma/(4*pi^2-sigma^2))*(-0.5*(N-1)*sin(2*pi.*Z)-2*pi*cos(2*pi.*Z))*cos(2*pi.*X)*cos(sigma*t+0.1);
+for j = 1:Nx
+    for i= 1: Nz
+uu_initial(i,j) = exp(-0.5*(N + 1)*Z(i,j))*(2*pi/(4*pi^2 - sigma^2))*( -2*pi*cos(2*pi*Z(i,j)) - (N-1)*0.5*sin(2*pi*Z(i,j)))*sin(2*pi*X(i,j))*sin(sigma*t+0.1);
+uw_initial(i,j) = exp(-0.5*(N + 1)*Z(i,j))*sin(2*pi*Z(i,j))*cos(2*pi*X(i,j))*sin(sigma*t+0.1);
+r_initial(i,j) = exp(-0.5*(N + 1)*Z(i,j))*(sigma/(4*pi^2-sigma^2))*((0.5*(N+1)-4*pi^2*N/sigma^2)*sin(2*pi*Z(i,j))-2*pi*cos(2*pi*Z(i,j)))*cos(2*pi*X(i,j))*cos(sigma*t+0.1);
+p_initial(i,j) = exp(-0.5*(N + 1)*Z(i,j))*(sigma/(4*pi^2-sigma^2))*(-0.5*(N-1)*sin(2*pi*Z(i,j))-2*pi*cos(2*pi*Z(i,j)))*cos(2*pi*X(i,j))*cos(sigma*t+0.1);
 
-
-H = (0.5./r_000).*(uu_initial.^2+uw_initial.^2) + (0.5./(r_000 .* N)).*(r_initial - p_initial).^2 + 0.5.* p_initial.^2./r_000;
-
-
-energy_initial = trapz(x_centres, trapz(z_centres,H, 2))
+    end
+end
+for i = 1:Nz
+    for j= 1: Nx
+H(i,j) = (0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + 0.5.* p_initial(i,j)^2/r_000(i,j);
+    end
+end
+energy_initial = trapz(z_centres, trapz(x_centres,H, 2))
 
 % Initial Condition
 % count_ = 0;
@@ -83,10 +88,10 @@ energy_initial = trapz(x_centres, trapz(z_centres,H, 2))
 % U(count_) = uu_initial(i,j);
 % end
 % end
-u_ = reshape(uw_initial', k, 1);
-w_ = reshape(uw_initial', k, 1);
-r_ = reshape(r_initial', k, 1);
-p_ = reshape(p_initial', k, 1);
+u_ = reshape(uu_initial', [k, 1]);
+w_ = reshape(uw_initial', [k, 1]);
+r_ = reshape(r_initial', [k, 1]);
+p_ = reshape(p_initial', [k, 1]);
 U = vertcat(u_,w_,r_,p_);
 % % w loop 
 % for j = 1:Nz
@@ -133,11 +138,12 @@ end
 % Make flux matrix
 
 count_col=3*k;
+count_row=0;
 for i = 1:Nz
    for j= 1:Nx
         count_col = count_col+1;
-       % for count_row = 1:k
-       count_row =1 ;
+        count_row = count_row+1;
+      
            if (i== 1 ) && (   j==1)
            % bottom left
                 F(count_row, count_col) = 1 ;
@@ -158,7 +164,7 @@ for i = 1:Nz
                 F(count_row, count_col) = 6 ;
            else
                 F(count_row, count_col) = 7 ;
-          % end
+           
            
        end
    end
