@@ -107,9 +107,9 @@ u_.interpolate(Expression(["1.0", "1.0"]))
 # Interpolation to indexed pieces of a VFS is not currently implemented.
 
 #Initial Energy
-#E_0 = assemble( (0.5*inner((u_),(u_))/r_0 + 0.5*pow(g,2)*pow(( r_ - p_/c_0),2)/(r_0*N) + 0.5* pow(p_,2)/(r_0*c_0))*dx )
+E_0 = assemble( (0.5*inner((u_),(u_))/r_0 + 0.5*pow(g,2)*pow(( r_ - p_/c_0),2)/(r_0*N) + 0.5* pow(p_,2)/(r_0*c_0))*dx )
 
-#print E_0
+
 # Create linear problem
 # a =   ( u*phi + r*xi + p* sigma)*dx - 0.5*dt*Poisson_Bracket( u , r , p )
 # L =   ( u_*phi + r_*xi + p_* sigma)*dx + 0.5*dt*Poisson_Bracket( u_ , r_ , p_ )
@@ -151,4 +151,4 @@ out=Function(W)
 
 #Compile test
 #remove later on
-print t ,"Seems to have worked"
+print "t = ",  t ,". " "Energy, e = ", E_0
