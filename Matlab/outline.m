@@ -5,8 +5,8 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=7;
-Nz=5;
+Nx=32;
+Nz=32;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
@@ -72,12 +72,18 @@ p_initial(i,j) = exp(-0.5*(N + 1)*Z(i,j))*(sigma/(4*pi^2-sigma^2))*(-0.5*(N-1)*s
 
     end
 end
-for i = 1:Nz
-    for j= 1: Nx
+for j = 1:Nx
+    for i= 1: Nz
 H(i,j) = (0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + 0.5.* p_initial(i,j)^2/r_000(i,j);
     end
 end
 energy_initial = trapz(z_centres, trapz(x_centres,H, 2))
+
+% Initial energy only close when n =64^2
+% However if we measure drift this should be fine?
+% Otherwise more accurate integration scheme will be required.
+
+
 
 % Initial Condition
 % count_ = 0;
