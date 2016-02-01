@@ -12,11 +12,11 @@ k4 = 4*k;
 N = 2;
 sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2)))
 period = 1/sigma;
- dt= 1/16;
-%dt = period / (10*Nx^2);
+% dt= 1/16;
+dt = period / (10*Nx^2);
 t=0;
 tend = 3*period;
-theta = 0.5;
+theta = 0.4;
 
 steps = tend /dt;
 
@@ -82,7 +82,7 @@ for j = 1:Nx
 H(i,j) = (0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + 0.5.* p_initial(i,j)^2/r_000(i,j);
     end
 end
-energy(1,1) = trapz(z_centres, trapz(x_centres,H, 2));
+energy(1,1) = trapz(z_centres, trapz(x_centres,H, 2))
 
 % Initial energy only close when n =64^2
 % However if we measure drift this should be fine?
@@ -460,5 +460,5 @@ for j = 1:Nx
 H(i,j) = (0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + 0.5.* p_initial(i,j)^2/r_000(i,j);
     end
 end
-energy(count_energy,1) = trapz(z_centres, trapz(x_centres,H, 2));
+energy(count_energy,1) = trapz(z_centres, trapz(x_centres,H, 2))
  end
