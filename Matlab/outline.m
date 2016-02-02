@@ -6,8 +6,8 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=16;
-Nz=16;
+Nx=32;
+Nz=32;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
@@ -16,7 +16,7 @@ period = 1/sigma;
  dt= 1/16;
 %dt = period / (10*Nx^2);
 t=0;
-tend = 4*dt;
+tend = 2*dt;
 theta = 0.5;
 
 steps = tend/dt;
@@ -442,7 +442,8 @@ end
 
 %% Make Poisson Matrix
 
-PB = S - F;
+%PB = S - F;
+PB = S + F;
 
 %% Make P, Q matrix
 % System to solve is P U^n+1 = Q U^n
@@ -456,7 +457,7 @@ count_energy=1;
 while t < tend
      count_energy = count_energy+1;
 
-U = inv(P)*Q*U;
+U = Q/P*U;
      t = t +dt;
 %% Exact Solution for timestep
     for i= 1: Nz
