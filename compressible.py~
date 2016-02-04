@@ -32,8 +32,8 @@ P = FunctionSpace(mesh, "DG", order_basis)
 W =  V*R*P
 
 # Define Background Density
-#r_0_expression = Expression( "exp(-3.0*x[0])" )
-r_0_expression = Expression( "1.0" )
+r_0_expression = Expression( "exp(-3.0*x[0])" )
+#r_0_expression = Expression( "1.0" )
 # Project onto Finite element space
 # so we can use it in variational forms
 r_0 = Function(R)
@@ -86,12 +86,16 @@ def Poisson_Bracket(velocity, density, pressure):
 #Current approach does not work
 #Externally determine dispersion relation and insert as constant may be appropiate for now
 # Matlab value
-# omega =  8.900185996715988
-omega = 1.0
+omega =  8.900185996715988
+
+#Exact initial conditions not working.
+# Currently need rewrite
+#Interpolating now works
+
 #exact_u = Expression( " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega * t + 0.1)" , t=t)
 #exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega *t + 0.1)" , t=t)
-#exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega * t +0.1) " , t=t)
-#exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos(omega * t + 0.1) ", t=t)
+#exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega * 0.1) " )
+#exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos(omega* 0.1) ")
 
 exact_u = Expression ("1.0")
 exact_w = Expression ("1.0")
@@ -119,17 +123,17 @@ E_0 = assemble( (0.5*inner((u_),(u_))/r_0 + 0.5*pow(g,2)*pow(( r_ - p_/c_0),2)/(
 
 
 # visualisation files
-u_u_file = File('./Results/u_u.pvd')
-u_w_file = File('./Results/u_w.pvd')
+u_file = File('./Results/u.pvd')
+#u_w_file = File('./Results/u_w.pvd')
 density_file = File('./Results/density.pvd')
 pressure_file = File('./Results/pressure.pvd')
 
 # output initial conditions
 # output does not currently work
 # issue must be the initial conditions 
-#density_file << r_
-#pressure_file << p_
-u_w_file << u_
+density_file << r_
+pressure_file << p_
+u_file << u_
 #u_u_file << u_.sub(1)
 
 out=Function(W)
