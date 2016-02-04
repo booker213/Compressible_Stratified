@@ -16,9 +16,9 @@ t = 0.0
 end_time  = Constant(1/16)
 
 #Define Constants
-c_0 = Constant(1) # Speed of sound
+c_0 = Constant(1.0) # Speed of sound
 g = Constant(9.81) # Gravity
-N = Constant(2) # Bouyancy frequency
+N = Constant(2.0) # Bouyancy frequency
 theta = Constant(0.5) # Alternating Flux
 #Future make theta differ in elements, hopefully with a random seeding
 #Theta \in [ 0.1 , 0.9 ] would be a preferable range.
@@ -92,22 +92,28 @@ omega =  8.900185996715988
 # Currently need rewrite
 #Interpolating now works
 
-#exact_u = Expression( " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega * t + 0.1)" , t=t)
-#exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega *t + 0.1)" , t=t)
-#exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega * 0.1) " )
-#exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos(omega* 0.1) ")
+exact_u = Expression( " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega  + 0.1)", N = 2, omega =  8.900185996715988 )
 
-exact_u = Expression ("1.0")
-exact_w = Expression ("1.0")
-exact_r = Expression ("1.0")
-exact_p = Expression ("1.0")
+exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega  + 0.1)", N = 2, omega =  8.900185996715988  )
+
+exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega + 0.1) " , N = 2, omega =  8.900185996715988)
+
+exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos(omega + 0.1) ", N = 2, omega =  8.900185996715988)
+
+#exact_u = Expression ("1.0")
+#exact_w = Expression ("1.0")
+#exact_r = Expression ( "exp(-0.5*(N+1)*x[0])" , N = 2)
+#exact_r = Expression ("1.0")
+#exact_p = Expression ("1.0")
 
 #Define initial conditions
+
 r_.interpolate(exact_r)
 p_.interpolate(exact_p)
 #u_.sub(0).interpolate(exact_w)
 #u_.sub(1).interpolate(exact_u)
-u_.interpolate(Expression(["1.0", "1.0"]))
+u_.interpolate(Expression([" exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega  + 0.1)",  " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega  + 0.1)"], N = 2, omega =  8.900185996715988))
+
 ## u_.interpolate(Expression([component_0, component_1]))
 # Lawrence fix
 # Interpolation to indexed pieces of a VFS is not currently implemented.
