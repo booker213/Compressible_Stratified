@@ -88,23 +88,19 @@ def Poisson_Bracket(velocity, density, pressure):
 # Matlab value
 omega =  8.900185996715988
 
-#Exact initial conditions not working.
-# Currently need rewrite
+#Energy is not as expected.
+# Currently need rechecking.
 #Interpolating now works
 
-exact_u = Expression( " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega  + 0.1)", N = 2, omega =  8.900185996715988 )
+#exact_u = Expression( " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega  + 0.1)", N = 2, omega =  8.900185996715988 )
 
-exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega  + 0.1)", N = 2, omega =  8.900185996715988  )
+#exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega  + 0.1)", N = 2, omega =  8.900185996715988  )
 
 exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega + 0.1) " , N = 2, omega =  8.900185996715988)
 
 exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos(omega + 0.1) ", N = 2, omega =  8.900185996715988)
 
-#exact_u = Expression ("1.0")
-#exact_w = Expression ("1.0")
-#exact_r = Expression ( "exp(-0.5*(N+1)*x[0])" , N = 2)
-#exact_r = Expression ("1.0")
-#exact_p = Expression ("1.0")
+
 
 #Define initial conditions
 
