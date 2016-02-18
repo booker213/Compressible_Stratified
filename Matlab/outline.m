@@ -6,17 +6,17 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=32;
-Nz=32;
+Nx=4;
+Nz=4;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
 sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2)))
 period = 1/sigma;
- dt= 1/16;
-%dt = period / (10*Nx^2);
+ %dt= 1/16;
+dt = period / (10*Nx^2);
 t=0;
-tend = 2*dt;
+tend = 3*period;
 theta = 0.5;
 
 steps = tend/dt;
@@ -170,43 +170,43 @@ for i = 1:Nz
       
            if (i== 1 ) && (   j==1)
            % bottom left
-                F(count_row, count_col) = (theta -1 )/dx ;
+                F(count_row, count_col) = (theta - (1-theta)-theta)/dx ;
                 F(count_row, count_col+1) = (1-theta)/dx ;                
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = (theta)/dx ;   
+               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dx ;   
            % bottom row
            elseif  (i== 1 ) && (   j~=1) && (j~=Nx)        
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = (2*theta-1)/dx ;
+               F(count_row, count_col) = (theta - (1-theta))/dx ;
                F(count_row, count_col+1) = (1-theta)/dx ;   
            elseif (i== Nz ) && (j==1)
            % top left
-                F(count_row, count_col) = (theta -1 )/dx ;
+                F(count_row, count_col) = (theta - (1-theta)-theta)/dx ;
                 F(count_row, count_col+1) = (1-theta)/dx ;   
            % top right
            elseif (i== Nz ) && (j==Nx)
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = (theta)/dx ;
+               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dx ;
               
            % top row
            elseif  (i== Nz ) && (   j~=1) && (j~=Nx)        
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = (2*theta-1)/dx ;
+               F(count_row, count_col) = (theta - (1-theta))/dx ;
                F(count_row, count_col+1) = (1-theta)/dx ;  
              % left wall
            elseif (j== 1 ) && (   i~=1) && (i~=Nz)
-                          F(count_row, count_col) = (theta -1 )/dx ;
+                F(count_row, count_col) = (theta - (1-theta)-theta)/dx ;
                 F(count_row, count_col+1) = (1-theta)/dx ;   
              % right wall
            elseif (j== Nx ) && (   i~=1) && (i~=Nz)
                
-                             F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = (theta)/dx ;
+               F(count_row, count_col-1) = (- theta  )/dx ;
+               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dx ;
            else
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = (2*theta-1)/dx ;
+               F(count_row, count_col) = (theta - (1-theta))/dx ;
                F(count_row, count_col+1) = (1-theta)/dx ;   
            
            
@@ -224,39 +224,39 @@ for i = 1:Nz
       
            if (i== 1 ) && (   j==1)
            % bottom left
-                F(count_row, count_col) = (theta -1 )/dz ;
+                F(count_row, count_col) = (theta - (1-theta)-theta)/dz ;
                 F(count_row, count_col+Nx) = (1-theta)/dz ;                
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
-                F(count_row, count_col) = (theta -1 )/dz ;
+                F(count_row, count_col) = (theta - (1-theta)-theta)/dz ;
                 F(count_row, count_col+Nx) = (1-theta)/dz ;  
            % bottom row
            elseif  (i== 1 ) && (   j~=1) && (j~=Nx)        
-                F(count_row, count_col) = (theta -1 )/dz ;
+                F(count_row, count_col) = (theta - (1-theta)-theta)/dz ;
                 F(count_row, count_col+Nx) = (1-theta)/dz ;   
            elseif (i== Nz ) && (j==1)
            % top left
                F(count_row, count_col-Nx) = (- theta  )/dz ;
-               F(count_row, count_col) = (theta)/dz ;
-           % top right
+               F(count_row, count_col) =((1-theta) +theta - (1-theta))/dz ;
+           % top right2*dt
            elseif (i== Nz ) && (j==Nx)
                F(count_row, count_col-Nx) = (- theta  )/dz ;
-               F(count_row, count_col) = (theta)/dz ;
+               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dz ;
               
            % top row
            elseif  (i== Nz ) && (   j~=1) && (j~=Nx)        
                F(count_row, count_col-Nx) = (- theta  )/dz ;
-               F(count_row, count_col) = (theta)/dz ;
+               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dz ;
                
                             % left wall
            elseif (j== 1 ) && (   i~=1) && (i~=Nz)
                F(count_row, count_col-Nx) = (- theta  )/dz ;
-               F(count_row, count_col) = (2*theta-1)/dz ;
+               F(count_row, count_col) = (theta - (1-theta))/dz ;
                F(count_row, count_col+Nx) = (1-theta)/dz ;     
              % right wall
            elseif (j== Nx ) && (   i~=1) && (i~=Nz)
                F(count_row, count_col-Nx) = (- theta  )/dz ;
-               F(count_row, count_col) = (2*theta-1)/dz ;
+               F(count_row, count_col) = (theta - (1-theta))/dz ;
                F(count_row, count_col+Nx) = (1-theta)/dz ;  
            else
                F(count_row, count_col-Nx) = (- theta  )/dz ;
@@ -280,72 +280,72 @@ for i = 1:Nz
       
            if (i== 1 ) && (   j==1)
            % bottom left
-                F(count_row, count_col_u) = (theta -1 )/dx ;
-                F(count_row, count_col_u+1) = (1-theta)/dx ;  
+                F(count_row, count_col_u) = (1-theta)/dx ;
+                F(count_row, count_col_u+1) = (theta)/dx ;  
                 
-                F(count_row, count_col_w) = (theta -1 )/dz ;
-                F(count_row, count_col_w+Nx) = (1-theta)/dz ;  
+                F(count_row, count_col_w) = (1-theta)/dz ;
+                F(count_row, count_col_w+Nx) = (theta)/dz ;  
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (theta)/dx ;     
+               F(count_row, count_col_u-1) = (- (1-theta) )/dx ;
+               F(count_row, count_col_u) = (-theta)/dx ;     
                
-                F(count_row, count_col_w) = (theta -1 )/dz ;
-                F(count_row, count_col_w+Nx) = (1-theta)/dz ; 
+                F(count_row, count_col_w) = (1- theta  )/dz ;
+                F(count_row, count_col_w+Nx) = (theta)/dz ; 
            % bottom row
            elseif  (i== 1 ) && (   j~=1) && (j~=Nx)        
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (2*theta-1)/dx ;
-               F(count_row, count_col_u+1) = (1-theta)/dx ;  
+               F(count_row, count_col_u-1) = (- (1-theta)  )/dx ;
+               F(count_row, count_col_u) = ((1-theta) - theta )/dx ;
+               F(count_row, count_col_u+1) = (theta)/dx ;  
                
-                F(count_row, count_col_w) = (theta -1 )/dz ;
-                F(count_row, count_col_w+Nx) = (1-theta)/dz ;  
+                F(count_row, count_col_w) = (1-theta  )/dz ;
+                F(count_row, count_col_w+Nx) = (theta)/dz ;  
            elseif (i== Nz ) && (j==1)
            % top left
-                F(count_row, count_col_u) = (theta -1 )/dx ;
-                F(count_row, count_col_u+1) = (1-theta)/dx ; 
+                F(count_row, count_col_u) = (1-theta  )/dx ;
+                F(count_row, count_col_u+1) = (theta)/dx ; 
                 
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (theta)/dz ;
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = -(theta)/dz ;
            % top right
            elseif (i== Nz ) && (j==Nx)
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (theta)/dx ; 
+               F(count_row, count_col_u-1) = -(1- theta  )/dx ;
+               F(count_row, count_col_u) = (-theta)/dx ; 
                
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (theta)/dz ;
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = (-theta)/dz ;
            % top row
            elseif  (i== Nz ) && (   j~=1) && (j~=Nx)        
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (2*theta-1)/dx ;
-               F(count_row, count_col_u+1) = (1-theta)/dx ;  
+               F(count_row, count_col_u-1) = -(1 - theta  )/dx ;
+               F(count_row, count_col_u) = ((1-theta) - theta )/dx ;
+               F(count_row, count_col_u+1) = (theta)/dx ;  
                
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (theta)/dz ;
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = (-theta)/dz ;
             % left wall
            elseif (j== 1 ) && (   i~=1) && (i~=Nz)
-                F(count_row, count_col_u) = (theta -1 )/dx ;
-                F(count_row, count_col_u+1) = (1-theta)/dx ;
+                F(count_row, count_col_u) = (1-theta  )/dx ;
+                F(count_row, count_col_u+1) = (theta)/dx ;
                 
-                F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (2*theta-1)/dz ;
-               F(count_row, count_col_w+Nx) = (1-theta)/dz ;   
+                F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = ((1-theta) - theta )/dz ;
+               F(count_row, count_col_w+Nx) = (theta)/dz ;   
              % right wall
            elseif (j== Nx ) && (   i~=1) && (i~=Nz)
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (theta)/dx ;  
+               F(count_row, count_col_u-1) = -(1- theta  )/dx ;
+               F(count_row, count_col_u) = -(theta)/dx ;  
                
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (2*theta-1)/dz ;
-               F(count_row, count_col_w+Nx) = (1-theta)/dz ;   
+               F(count_row, count_col_w-Nx) = -(1 - theta  )/dz ;
+               F(count_row, count_col_w) = ((1-theta) - theta )/dz ;
+               F(count_row, count_col_w+Nx) = (theta)/dz ;   
            else
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (2*theta-1)/dx ;
-               F(count_row, count_col_u+1) = (1-theta)/dx ;   
+               F(count_row, count_col_u-1) = -(1- theta  )/dx ;
+               F(count_row, count_col_u) = ((1-theta) - theta )/dx ;
+               F(count_row, count_col_u+1) = (theta)/dx ;   
            
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (2*theta-1)/dz ;
-               F(count_row, count_col_w+Nx) = (1-theta)/dz ;   
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = ((1-theta) - theta )/dz ;
+               F(count_row, count_col_w+Nx) = (theta)/dz ;   
            
            
        end
@@ -362,74 +362,74 @@ for i = 1:Nz
         count_col_w = count_col_w+1;
         count_row = count_row+1;
       
-           if (i== 1 ) && (   j==1)
+            if (i== 1 ) && (   j==1)
            % bottom left
-                F(count_row, count_col_u) = (theta -1 )/dx ;
-                F(count_row, count_col_u+1) = (1-theta)/dx ;  
+                F(count_row, count_col_u) = (1-theta)/dx ;
+                F(count_row, count_col_u+1) = (theta)/dx ;  
                 
-                F(count_row, count_col_w) = (theta -1 )/dz ;
-                F(count_row, count_col_w+Nx) = (1-theta)/dz ;  
+                F(count_row, count_col_w) = (1-theta)/dz ;
+                F(count_row, count_col_w+Nx) = (theta)/dz ;  
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (theta)/dx ;     
+               F(count_row, count_col_u-1) = (- (1-theta) )/dx ;
+               F(count_row, count_col_u) = (-theta)/dx ;     
                
-                F(count_row, count_col_w) = (theta -1 )/dz ;
-                F(count_row, count_col_w+Nx) = (1-theta)/dz ; 
+                F(count_row, count_col_w) = (1- theta  )/dz ;
+                F(count_row, count_col_w+Nx) = (theta)/dz ; 
            % bottom row
            elseif  (i== 1 ) && (   j~=1) && (j~=Nx)        
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (2*theta-1)/dx ;
-               F(count_row, count_col_u+1) = (1-theta)/dx ;  
+               F(count_row, count_col_u-1) = (- (1-theta)  )/dx ;
+               F(count_row, count_col_u) = ((1-theta) - theta )/dx ;
+               F(count_row, count_col_u+1) = (theta)/dx ;  
                
-                F(count_row, count_col_w) = (theta -1 )/dz ;
-                F(count_row, count_col_w+Nx) = (1-theta)/dz ;  
+                F(count_row, count_col_w) = (1-theta  )/dz ;
+                F(count_row, count_col_w+Nx) = (theta)/dz ;  
            elseif (i== Nz ) && (j==1)
            % top left
-                F(count_row, count_col_u) = (theta -1 )/dx ;
-                F(count_row, count_col_u+1) = (1-theta)/dx ; 
+                F(count_row, count_col_u) = (1-theta  )/dx ;
+                F(count_row, count_col_u+1) = (theta)/dx ; 
                 
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (theta)/dz ;
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = -(theta)/dz ;
            % top right
            elseif (i== Nz ) && (j==Nx)
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (theta)/dx ; 
+               F(count_row, count_col_u-1) = -(1- theta  )/dx ;
+               F(count_row, count_col_u) = (-theta)/dx ; 
                
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (theta)/dz ;
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = (-theta)/dz ;
            % top row
            elseif  (i== Nz ) && (   j~=1) && (j~=Nx)        
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (2*theta-1)/dx ;
-               F(count_row, count_col_u+1) = (1-theta)/dx ;  
+               F(count_row, count_col_u-1) = -(1 - theta  )/dx ;
+               F(count_row, count_col_u) = ((1-theta) - theta )/dx ;
+               F(count_row, count_col_u+1) = (theta)/dx ;  
                
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (theta)/dz ;
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = (-theta)/dz ;
             % left wall
            elseif (j== 1 ) && (   i~=1) && (i~=Nz)
-                F(count_row, count_col_u) = (theta -1 )/dx ;
-                F(count_row, count_col_u+1) = (1-theta)/dx ;
+                F(count_row, count_col_u) = (1-theta  )/dx ;
+                F(count_row, count_col_u+1) = (theta)/dx ;
                 
-                F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (2*theta-1)/dz ;
-               F(count_row, count_col_w+Nx) = (1-theta)/dz ;   
+                F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = ((1-theta) - theta )/dz ;
+               F(count_row, count_col_w+Nx) = (theta)/dz ;   
              % right wall
            elseif (j== Nx ) && (   i~=1) && (i~=Nz)
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (theta)/dx ;  
+               F(count_row, count_col_u-1) = -(1- theta  )/dx ;
+               F(count_row, count_col_u) = -(theta)/dx ;  
                
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (2*theta-1)/dz ;
-               F(count_row, count_col_w+Nx) = (1-theta)/dz ;   
+               F(count_row, count_col_w-Nx) = -(1 - theta  )/dz ;
+               F(count_row, count_col_w) = ((1-theta) - theta )/dz ;
+               F(count_row, count_col_w+Nx) = (theta)/dz ;   
            else
-               F(count_row, count_col_u-1) = (- theta  )/dx ;
-               F(count_row, count_col_u) = (2*theta-1)/dx ;
-               F(count_row, count_col_u+1) = (1-theta)/dx ;   
+               F(count_row, count_col_u-1) = -(1- theta  )/dx ;
+               F(count_row, count_col_u) = ((1-theta) - theta )/dx ;
+               F(count_row, count_col_u+1) = (theta)/dx ;   
            
-               F(count_row, count_col_w-Nx) = (- theta  )/dz ;
-               F(count_row, count_col_w) = (2*theta-1)/dz ;
-               F(count_row, count_col_w+Nx) = (1-theta)/dz ;   
+               F(count_row, count_col_w-Nx) = -(1- theta  )/dz ;
+               F(count_row, count_col_w) = ((1-theta) - theta )/dz ;
+               F(count_row, count_col_w+Nx) = (theta)/dz ;   
            
            
        end
@@ -476,14 +476,7 @@ H(i,j) = (0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + (0.5./(r_000 
 end
 energy(count_energy,1) = trapz(z_centres, trapz(x_centres,H, 2));
 
-% Plot exact solution
-figure
-contourf(X,Z,p_initial)
-title([' Exact Soln of pressure at t = ', num2str(t)])
-xlabel(' x ')
-ylabel( ' z ')
-colorbar
-pause(0.1)
+
 %% Decompose numerical solution for energy and error analysis
 count_col =0;
 
@@ -519,15 +512,27 @@ H(i,j) = (0.5./r_000(i,j))*(uu(i,j)^2+uw(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r(i
 
 end
 energy_sim(count_energy,1) = trapz(z_centres, trapz(x_centres,H, 2));
+
+end
+
+% Plot exact solution
 figure
+contourf(X,Z,p_initial)
+title([' Exact Soln of pressure at t = ', num2str(t)])
+xlabel(' x ')
+ylabel( ' z ')
+colorbar
+
+
+ figure
 contourf(X,Z,p)
 pause(0.1)
 title([' Numerical Soln of pressure at t = ', num2str(t)])
 colorbar
 xlabel(' x ')
 ylabel( ' z ')
-end
- 
+
+
  error_uu= uu - uu_initial;
  error_uw= uw - uw_initial;
  error_r= r - r_initial;
