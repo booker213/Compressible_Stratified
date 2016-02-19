@@ -6,18 +6,18 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=4;
-Nz=4;
+Nx=8;
+Nz=8;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
 sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2)))
 period = 1/sigma;
  %dt= 1/16;
-dt = period / (10*Nx^2);
+dt = period / (10*Nx);
 t=0;
-tend = 3*period;
-theta = 0.5;
+tend = 100*period;
+theta = 0.4;
 
 steps = tend/dt;
 
@@ -89,14 +89,11 @@ p_initial(i,j) = exp(-0.5*(N + 1)*Z(i,j))*(sigma/(4*pi^2-sigma^2))*(-0.5*(N-1)*s
 end
     for i= 1: Nz
         for j = 1:Nx
-H(i,j) = (0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + 0.5.* p_initial(i,j)^2/r_000(i,j);
+H(i,j) = dv*(0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + dv*(0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + dv*0.5.* p_initial(i,j)^2/r_000(i,j);
     end
 end
-energy(1,1) = trapz(z_centres, trapz(x_centres,H, 2));
+energy(1,1) = sum(sum(H));
 energy_sim(1,1)= energy(1,1);
-% Initial energy only close when n =64^2
-% However if we measure drift this should be fine?
-% Otherwise more accurate integration scheme will be required.
 
 
 
@@ -448,17 +445,17 @@ PB = S + F;
 %% Make P, Q matrix
 % System to solve is P U^n+1 = Q U^n
 
-P = eye(k4) - dt*0.5*PB;
-Q = eye(k4) + dt*0.5*PB;
+P = eye(k4) + dt*0.5*PB;
+Q = eye(k4) - dt*0.5*PB;
 
 
 %% Solve loop
 count_energy=1;
 while t < tend
-     count_energy = count_energy+1;
+ count_energy = count_energy+1;
 
-U = Q/P*U;
-     t = t +dt;
+U=P\(Q*U);
+t = t +dt;
 %% Exact Solution for timestep
     for i= 1: Nz
         for j = 1:Nx
@@ -471,10 +468,10 @@ p_initial(i,j) = exp(-0.5*(N + 1)*Z(i,j))*(sigma/(4*pi^2-sigma^2))*(-0.5*(N-1)*s
 end
 for j = 1:Nx
     for i= 1: Nz
-H(i,j) = (0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + 0.5.* p_initial(i,j)^2/r_000(i,j);
+H(i,j) = dv*(0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + dv*(0.5./(r_000 (i,j)* N)).*(r_initial(i,j) - p_initial(i,j))^2 + dv*0.5.* p_initial(i,j)^2/r_000(i,j);
     end
 end
-energy(count_energy,1) = trapz(z_centres, trapz(x_centres,H, 2));
+energy(count_energy,1) = sum(sum(H));
 
 
 %% Decompose numerical solution for energy and error analysis
@@ -507,11 +504,11 @@ p(i,j) = U(count_col);
 % Energy Evaluation
 for j = 1:Nx
     for i= 1: Nz
-H(i,j) = (0.5./r_000(i,j))*(uu(i,j)^2+uw(i,j)^2) + (0.5./(r_000 (i,j)* N)).*(r(i,j) - p(i,j))^2 + 0.5.* p(i,j)^2/r_000(i,j);
+H(i,j) = dv*(0.5./r_000(i,j))*(uu(i,j)^2+uw(i,j)^2) + dv*(0.5./(r_000 (i,j)* N)).*(r(i,j) - p(i,j))^2 + dv*0.5.* p(i,j)^2/r_000(i,j);
     end
 
 end
-energy_sim(count_energy,1) = trapz(z_centres, trapz(x_centres,H, 2));
+energy_sim(count_energy,1) = sum(sum(H));
 
 end
 
