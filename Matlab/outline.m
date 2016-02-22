@@ -6,8 +6,8 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=8;
-Nz=8;
+Nx=3;
+Nz=3;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
@@ -16,8 +16,8 @@ period = 1/sigma;
  %dt= 1/16;
 dt = period / (10*Nx);
 t=0;
-tend = 100*period;
-theta = 0.4;
+tend = 10*period;
+theta = 0.5;
 
 steps = tend/dt;
 
@@ -34,7 +34,7 @@ r_000=zeros(Nz, Nx);
 U= zeros(k4,0);
 S = zeros(k4, k4 );
 F = zeros(k4, k4 );
-PB = zeros(k4, k4 );
+DIV = zeros(k4, k4 );
 P = zeros(k4, k4 );
 Q = zeros(k4, k4 );
 uu_initial = zeros(Nz, Nx);
@@ -66,16 +66,7 @@ z_centres = a+dz/2 : dz : Lz;
 
 %% Background density 
 r_000 = exp(-3.*Z);
-% 
-% count_r = 0;
-% for j = 1:Nz
-% for i = 1:Nx
-% count_r = count_r + 1;
-% r_00(count_r) = r_000(i,j);
-% end
-% end
-% r_0 = repmat(r_00,4);
-% dr_0 = -3*r_0;
+
 % matlab matrix (columns, rows)
 %% Exact Solution 
     for i= 1: Nz
@@ -98,42 +89,13 @@ energy_sim(1,1)= energy(1,1);
 
 
 %% Initial Condition
-% count_ = 0;
-% % u loop
-% for j = 1:Nz
-% for i = 1:Nx
-% count_ = count_ + 1;
-% U(count_) = uu_initial(i,j);
-% end
-% end
+% Reshape initial condition into column vector
 u_ = reshape(uu_initial', [k, 1]);
 w_ = reshape(uw_initial', [k, 1]);
 r_ = reshape(r_initial', [k, 1]);
 p_ = reshape(p_initial', [k, 1]);
 U = vertcat(u_,w_,r_,p_);
-% % w loop 
-% for j = 1:Nz
-% for i = 1:Nx
-% count_ = count_ + 1;
-% U(count_) = uw_initial(i,j);
-% end
-% end
-% 
-% % r loop
-% for j = 1:Nz
-% for i = 1:Nx
-% count_ = count_ + 1;
-% U(count_) = r_initial(i,j);
-% end
-% end
-% 
-% % p loop
-% for j = 1:Nz
-% for i = 1:Nx
-% count_ = count_ + 1;
-% U(count_) = p_initial(i,j);
-% end
-% end
+
 
 %% Make Source matrix
 % W source loop
@@ -148,7 +110,7 @@ S(j,count_source_w) = dv^2*(2/N+2);
 
 end
 
-%% P source loop
+% P source loop
 count_source_p = k;
 for j = 3*k+1:4*k
 count_source_p = count_source_p +1;
@@ -167,7 +129,7 @@ for i = 1:Nz
       
            if (i== 1 ) && (   j==1)
            % bottom left
-                F(count_row, count_col) = (theta - (1-theta)-theta)/dx ;
+                F(count_row, count_col) = ( - (1-theta))/dx ;
                 F(count_row, count_col+1) = (1-theta)/dx ;                
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
@@ -185,7 +147,7 @@ for i = 1:Nz
            % top right
            elseif (i== Nz ) && (j==Nx)
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dx ;
+               F(count_row, count_col) = ( - (1-theta))/dx ;
               
            % top row
            elseif  (i== Nz ) && (   j~=1) && (j~=Nx)        
@@ -225,7 +187,7 @@ for i = 1:Nz
                 F(count_row, count_col+Nx) = (1-theta)/dz ;                
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
-                F(count_row, count_col) = (theta - (1-theta)-theta)/dz ;
+                F(count_row, count_col) = ( - (1-theta))/dz ;
                 F(count_row, count_col+Nx) = (1-theta)/dz ;  
            % bottom row
            elseif  (i== 1 ) && (   j~=1) && (j~=Nx)        
@@ -437,16 +399,16 @@ end
 % j -> +,- Nx
 
 
-%% Make Poisson Matrix
+%% Make DIV Matrix
 
-%PB = S - F;
-PB = S + F;
+
+DIV = S + F;
 
 %% Make P, Q matrix
 % System to solve is P U^n+1 = Q U^n
 
-P = eye(k4) + dt*0.5*PB;
-Q = eye(k4) - dt*0.5*PB;
+P = eye(k4) + dt*0.5*DIV;
+Q = eye(k4) - dt*0.5*DIV;
 
 
 %% Solve loop
@@ -546,21 +508,3 @@ ylabel( ' z ')
  uw_2 = sqrt (sum(sum (error_uw.*error_uw)));
  r_2 = sqrt (sum (sum(error_r.*error_r)));
  p_2 = sqrt (sum( sum(error_p.*error_p)));
-%  uu_2_test=0;
-%  uw_2_test=0;
-%  r_2_test=0;
-%  p_2_test=0;
-%  for j = 1:Nx
-%     for i= 1: Nz
-% uu_2_test = uu_2_test + error_uu(i,j)^2;
-% uw_2_test = uw_2_test + error_uw(i,j)^2;
-% r_2_test = r_2_test + error_r(i,j)^2;
-% p_2_test = p_2_test + error_p(i,j)^2;
-%     end
-%  end
-%  
-% 
-%  uu_2_sqrt = sqrt (uu_2_test);
-%  uw_2_sqrt = sqrt (uw_2_test);
-%  r_2_sqrt = sqrt (r_2_test);
-%  p_2_sqrt = sqrt (p_2_test);

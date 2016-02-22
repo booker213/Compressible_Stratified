@@ -1,5 +1,10 @@
 from firedrake import *
 
+disable_performance_optimisations()
+# Needed to enable re-evaluation of the energy
+# Disables Firedrake caching
+
+
 #Create Mesh
 m = 16
 mesh = UnitSquareMesh(m, m,  quadrilateral=quadrilateral)
@@ -8,6 +13,9 @@ order_basis = 0
 # Note x[0] = z
 #      x[1] = x
 # Attempt to make an easy extension to 3D ?
+
+
+
 
 # Declare timestep 
 # Currently replicating Sanders' work
