@@ -1,29 +1,13 @@
 errors:
 
-dispersion relation:
+attempt linear solve without fluxes 
+
+
+error msg;
 
 Traceback (most recent call last):
-  File "compressible.py", line 51, in <module>
-    omega = Expression(sqrt(0.5*(8*pow(pi,2)+0.25*pow((N+1),2) + sqrt( pow((8*(pi,2) + 0.25*pow((N+1),2)),2) - 16* (pi,2) *N))))#Dispersion relation fix later
-TypeError: can only concatenate tuple (not "float") to tuple
-
-
-
-plot initial conditions:
-
-Traceback (most recent call last):
-  File "compressible.py", line 103, in <module>
-    density_file << r_
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/io.py", line 110, in __lshift__
-    self._file << data
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/io.py", line 524, in __lshift__
-    self._update_PVD(data)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/io.py", line 542, in _update_PVD
-    new_vtk << function
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/io.py", line 220, in __lshift__
-    output = projection.project(function, Vo, name=function.name())
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/projection.py", line 98, in project
-    form_compiler_parameters=form_compiler_parameters)
+  File "compressible.py", line 177, in <module>
+    solve(a == L, out)
   File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/solving.py", line 120, in solve
     _solve_varproblem(*args, **kwargs)
   File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/solving.py", line 147, in _solve_varproblem
@@ -35,39 +19,25 @@ Traceback (most recent call last):
     self.snes.solve(None, v)
   File "PETSc/SNES.pyx", line 520, in petsc4py.PETSc.SNES.solve (src/petsc4py.PETSc.c:169677)
   File "PETSc/petscsnes.pxi", line 253, in petsc4py.PETSc.SNES_Function (src/petsc4py.PETSc.c:33478)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/solving_utils.py", line 193, in form_function
-    with ctx._Fs[lvl].dat.vec_ro as v:
-  File "/home/csunix/linux/apps/install/python/2.7.8/lib/python2.7/contextlib.py", line 17, in __enter__
-    return self.gen.next()
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/petsc_base.py", line 230, in vec_context
-    self._force_evaluation()
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/base.py", line 1565, in _force_evaluation
-    _trace.evaluate(reads, writes)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/base.py", line 169, in evaluate
-    comp._run()
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/base.py", line 4032, in _run
-    return self.compute()
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/base.py", line 4073, in compute
-    fun = self._jitmodule
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/utils.py", line 64, in __get__
-    obj.__dict__[self.__name__] = result = self.fget(obj)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/sequential.py", line 147, in _jitmodule
-    direct=self.is_direct, iterate=self.iteration_region)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/caching.py", line 203, in __new__
-    obj = make_obj()
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/caching.py", line 193, in make_obj
-    obj.__init__(*args, **kwargs)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 687, in __init__
-    self.compile()
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/host.py", line 785, in compile
-    compiler=compiler.get('name'))
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/compilation.py", line 270, in load
-    dll = compiler.get_so(src, extension)
-  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2/compilation.py", line 139, in get_so
-    Original error: %s""" % (cc, logfile, errfile, e))
-pyop2.exceptions.CompilationError: Command "['mpicc', '-std=c99', '-fPIC', '-Wall', '-g', '-O3', '-fno-tree-vectorize', '-I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/include', '-I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2', '-msse', '-o', '/tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.so.tmp', '/tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.c', '-shared', '-L/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib', '-Wl,-rpath,/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib', '-lpetsc', '-lm']" returned with error.
-Unable to compile code
-Compile log in /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.log
-Compile errors in /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.err
-Original error: status 1 invoking 'mpicc -std=c99 -fPIC -Wall -g -O3 -fno-tree-vectorize -I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/include -I/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/PyOP2-0.11.0_397_g9860f8d-py2.7-linux-x86_64.egg/pyop2 -msse -o /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.so.tmp /tmp/pyop2-cache-uid368130/76ff16093e334e3cbc42e6e3e7e67a84_p11101.c -shared -L/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib -Wl,-rpath,/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/petsc/lib -lpetsc -lm'
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/solving_utils.py", line 187, in form_function
+    nest=problem._nest)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/assemble.py", line 68, in assemble
+    inverse=inverse, nest=nest)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/assemble.py", line 101, in _assemble
+    inverse=inverse)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/firedrake/ffc_interface.py", line 260, in compile_form
+    fd = compute_form_data(form)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/ufl/algorithms/compute_form_data.py", line 331, in compute_form_data
+    check_form_arity(preprocessed_form, self.original_form.arguments()) # Currently testing how fast this is
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/ufl/algorithms/check_arities.py", line 126, in check_form_arity
+    check_integrand_arity(itg.integrand(), arguments)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/ufl/algorithms/check_arities.py", line 120, in check_integrand_arity
+    args = map_expr_dag(rules, expr, compress=False)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/ufl/corealg/map_dag.py", line 68, in map_expr_dag
+    r = function(v, *rops)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/ufl/corealg/multifunction.py", line 87, in __call__
+    return self._handlers[o._ufl_typecode_](o, *args)
+  File "/home/cserv1_a/apps/install/firedrake/0.12.0/lib64/python2.7/site-packages/ufl/algorithms/check_arities.py", line 41, in sum
+    raise ArityMismatch("Adding expressions with non-matching form arguments {0} vs {1}.".format(a, b))
+ufl.algorithms.check_arities.ArityMismatch: Adding expressions with non-matching form arguments (Argument(FunctionSpace(Mesh(VectorElement('Q', quadrilateral, 1, dim=2), 1), MixedElement(VectorElement('DQ', quadrilateral, 0, dim=2), FiniteElement('DQ', quadrilateral, 0), FiniteElement('DQ', quadrilateral, 0))), 0, None), Argument(FunctionSpace(Mesh(VectorElement('Q', quadrilateral, 1, dim=2), 1), MixedElement(VectorElement('DQ', quadrilateral, 0, dim=2), FiniteElement('DQ', quadrilateral, 0), FiniteElement('DQ', quadrilateral, 0))), 1, None)) vs (Argument(FunctionSpace(Mesh(VectorElement('Q', quadrilateral, 1, dim=2), 1), MixedElement(VectorElement('DQ', quadrilateral, 0, dim=2), FiniteElement('DQ', quadrilateral, 0), FiniteElement('DQ', quadrilateral, 0))), 0, None),).
 
