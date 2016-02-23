@@ -41,7 +41,7 @@ W =  V*R*P
 # Define Background Density
 r_0_expression = Expression( "exp(-3.0*x[0])" )
 dr_0_expression = Expression( "-3.0*exp(-3.0*x[0])" )
-#r_0_expression = Expression( "1.0" )
+
 # Project onto Finite element space
 # so we can use it in variational forms
 r_0 = Function(R)
@@ -54,9 +54,11 @@ dr_0.interpolate(dr_0_expression)
 (phi, xi, tau) = TestFunctions(W) # Test functions for velocity, density, pressure respectively
 
 #Function Space for initial conditions
-w_ = Function(W)
-(u_, r_, p_) = w_.split()
 
+w_ = Function(W)
+(u_, r_, p_) = split(w_)
+w = Function(W)
+(u, r, p) = split(w)
 #Set up element normal
 n = FacetNormal(mesh)
 
@@ -89,6 +91,7 @@ n = FacetNormal(mesh)
 #Dispersion relation fix later
 #Current approach does not work
 #Externally determine dispersion relation and insert as constant may be appropiate for now
+
 # Matlab value
 omega =  8.900185996715988
 
@@ -100,17 +103,19 @@ omega =  8.900185996715988
 
 #exact_w =  Expression( " exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega  + 0.1)", N = 2, omega =  8.900185996715988  )
 
-exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(omega + 0.1) " , N = 2, omega =  8.900185996715988)
+exact_r = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( ( 0.5*(N + 1) - (4*pi*pi*N/(omega*omega)))*sin(2*pi*x[0]) - 2*pi*cos(2*pi*x[0]))*cos(2*pi*x[1])*cos(0.1) " , N = 2, omega =  8.900185996715988)
 
-exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos(omega + 0.1) ", N = 2, omega =  8.900185996715988)
+exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*omega))*( -0.5*(N-1)*sin(2*pi*x[0]) - 2*pi *cos(2* pi *x[0]))*cos(2*pi*x[1])*cos( 0.1) ", N = 2, omega =  8.900185996715988)
 
+(u_, r_, p_) = w_.split()
 
+(u, r, p) = w.split()
 
 #Define initial conditions
 
 r_.interpolate(exact_r)
 p_.interpolate(exact_p)
-u_.interpolate(Expression([" exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin(omega  + 0.1)",  " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin (omega  + 0.1)"], N = 2, omega =  8.900185996715988))
+u_.interpolate(Expression([" exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi*x[1])*sin( 0.1)",  " exp( -0.5*( N + 1 )*x[0] )* ( 2 * pi/( 4 * pi*pi - omega*omega)) * ( -2*pi*cos(2*pi*x[0]) - 0.5*(N-1)*sin(2*pi*x[0]) )* sin(2*pi*x[1])*sin ( 0.1)"], N = 2, omega =  8.900185996715988))
 
 ## u_.interpolate(Expression([component_0, component_1]))
 # Lawrence fix
@@ -132,10 +137,10 @@ a1 = - 0.5*timestep*(- dot (grad((g*g)/(N*N)*(r - p/c_0)), phi) + dot(grad(r_0*x
 a2 = - 0.5*timestep*( dr_0*(((g*g)/(r_0*N))*(r - p/c_0)*phi[0] - xi*u[0]))*dx
 a3 = - 0.5*timestep*(g*r_0*(tau*u[0] - ( (g*g)/(r_0*N)*(p/(c_0*c_0)-r/c_0)+p/(r_0*c_0) )*phi[0] ) )*dx
 a4 = - 0.5*timestep*(- dot (grad(( (g*g*c_0*c_0)/(N)*(p/(c_0*c_0)-r/c_0)+p/(c_0) )), phi) + dot(grad(c_0*r_0*tau), u))*dx
-a5 = - 0.5*timestep*( -jump((g*g)/(N*N)*(r - p/c_0))*dot((1-theta)*phi('-')+ theta*phi('+'), n))*dS
-a6 = - 0.5*timestep*( jump(r_0*xi)*dot((1-theta)*u('-')+ theta*u('+'), n))*dS
-a7 = - 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p/(c_0*c_0)-r/c_0)+p/(c_0) ))*dot((1-theta)*phi('-')+ theta*phi('+'), n))*dS
-a8 = - 0.5*timestep*( jump(c_0*r_0*tau)*dot((1-theta)*u('-')+ theta*u('+'), n))*dS
+a5 = - 0.5*timestep*( -jump((g*g)/(N*N)*(r - p/c_0))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
+a6 = - 0.5*timestep*( jump(r_0*xi)*dot((1-theta)*u('-')+ theta*u('+'), n('-')))*dS
+a7 = - 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p/(c_0*c_0)-r/c_0)+p/(c_0) ))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
+a8 = - 0.5*timestep*( jump(c_0*r_0*tau)*dot((1-theta)*u('-')+ theta*u('+'), n('-')))*dS
 
 a = a0 + a1 + a2 +  a3 + a4 + a5 + a6 + a7 + a8
 
@@ -144,12 +149,13 @@ L1 = 0.5*timestep*(- dot (grad((g*g)/(N*N)*(r_ - p_/c_0)), phi) + dot(grad(r_0*x
 L2 = 0.5*timestep*( dr_0*(((g*g)/(r_0*N))*(r_ - p_/c_0)*phi[0] - xi*u[0]))*dx
 L3 = 0.5*timestep*(g*r_0*(tau*u_[0] - ( (g*g)/(r_0*N)*(p_/(c_0*c_0)-r_/c_0)+p_/(r_0*c_0) )*phi[0] ) )*dx
 L4 = 0.5*timestep*(- dot (grad(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) )), phi) + dot(grad(c_0*r_0*tau), u_))*dx
-L5 = 0.5*timestep*( -jump((g*g)/(N*N)*(r_ - p_/c_0))*dot((1-theta)*phi('-')+ theta*phi('+'), n))*dS
-L6 = 0.5*timestep*( jump(r_0*xi)*dot((1-theta)*u_('-')+ theta*u_('+'), n))*dS
-L7 = 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) ))*dot((1-theta)*phi('-')+ theta*phi('+'), n))*dS
-L8 = 0.5*timestep*( jump(c_0*r_0*tau)*dot((1-theta)*u_('-')+ theta*u_('+'), n))*dS
+L5 = 0.5*timestep*( -jump((g*g)/(N*N)*(r_ - p_/c_0))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
+L6 = 0.5*timestep*( jump(r_0*xi)*dot((1-theta)*u_('-')+ theta*u_('+'), n('-')))*dS
+L7 = 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) ))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
+L8 = 0.5*timestep*( jump(c_0*r_0*tau)*dot((1-theta)*u_('-')+ theta*u_('+'), n('-')))*dS
 
 L = L0 + L1 + L2 + L3 + L4 + L5 + L6 + L7 + L8
+
 
 
 # visualisation files
