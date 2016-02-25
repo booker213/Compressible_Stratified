@@ -6,23 +6,23 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=3;
-Nz=3;
+Nx=8;
+Nz=8;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
 sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2)))
 period = 1/sigma;
  %dt= 1/16;
-dt = period / (10*Nx);
+dt = period / (10*Nx^2);
 t=0;
-tend = 10*period;
+tend = period;
 theta = 0.5;
 
 steps = tend/dt;
 
-energy= zeros(steps+1,0);
-energy_sim = zeros(steps+1,0);
+energy= zeros(ceil(steps+1),0);
+energy_sim = zeros(ceil(steps+1),0);
 %% Random theta
 % theta_ = rand(k, 1);
 % theta = repmat( theta_, 4);
@@ -100,21 +100,24 @@ U = vertcat(u_,w_,r_,p_);
 %% Make Source matrix
 % W source loop
 count_source_w = 2*k;
+% Density source
 for j = k+1:2*k
 count_source_w = count_source_w+1;
-S(j,count_source_w) = dv^2*(-2/N);
+S(j,count_source_w) = (-2/N);
 end
+% Pressure source
 for j = k+1:2*k
 count_source_w = count_source_w+1;
-S(j,count_source_w) = dv^2*(2/N+2);
+S(j,count_source_w) = (2/N+2);
 
 end
 
 % P source loop
+% Vertical velocity source
 count_source_p = k;
 for j = 3*k+1:4*k
 count_source_p = count_source_p +1;
-S(j,count_source_p) = dv^2*(-2);
+S(j,count_source_p) = (-2);
 
 end
 
@@ -129,12 +132,12 @@ for i = 1:Nz
       
            if (i== 1 ) && (   j==1)
            % bottom left
-                F(count_row, count_col) = ( - (1-theta))/dx ;
+                F(count_row, count_col) = ( (theta))/dx ;
                 F(count_row, count_col+1) = (1-theta)/dx ;                
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dx ;   
+               F(count_row, count_col) = ( - (1-theta))/dx ;   
            % bottom row
            elseif  (i== 1 ) && (   j~=1) && (j~=Nx)        
                F(count_row, count_col-1) = (- theta  )/dx ;
@@ -142,7 +145,7 @@ for i = 1:Nz
                F(count_row, count_col+1) = (1-theta)/dx ;   
            elseif (i== Nz ) && (j==1)
            % top left
-                F(count_row, count_col) = (theta - (1-theta)-theta)/dx ;
+                F(count_row, count_col) = (theta )/dx ;
                 F(count_row, count_col+1) = (1-theta)/dx ;   
            % top right
            elseif (i== Nz ) && (j==Nx)
@@ -156,13 +159,13 @@ for i = 1:Nz
                F(count_row, count_col+1) = (1-theta)/dx ;  
              % left wall
            elseif (j== 1 ) && (   i~=1) && (i~=Nz)
-                F(count_row, count_col) = (theta - (1-theta)-theta)/dx ;
+                F(count_row, count_col) = (theta )/dx ;
                 F(count_row, count_col+1) = (1-theta)/dx ;   
              % right wall
            elseif (j== Nx ) && (   i~=1) && (i~=Nz)
                
                F(count_row, count_col-1) = (- theta  )/dx ;
-               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dx ;
+               F(count_row, count_col) = ( - (1-theta))/dx ;
            else
                F(count_row, count_col-1) = (- theta  )/dx ;
                F(count_row, count_col) = (theta - (1-theta))/dx ;
@@ -183,7 +186,7 @@ for i = 1:Nz
       
            if (i== 1 ) && (   j==1)
            % bottom left
-                F(count_row, count_col) = (theta - (1-theta)-theta)/dz ;
+                F(count_row, count_col) = (theta )/dz ;
                 F(count_row, count_col+Nx) = (1-theta)/dz ;                
            % bottom right
            elseif (i== 1 ) &&  (j==Nx)
@@ -191,21 +194,21 @@ for i = 1:Nz
                 F(count_row, count_col+Nx) = (1-theta)/dz ;  
            % bottom row
            elseif  (i== 1 ) && (   j~=1) && (j~=Nx)        
-                F(count_row, count_col) = (theta - (1-theta)-theta)/dz ;
+                F(count_row, count_col) = (theta )/dz ;
                 F(count_row, count_col+Nx) = (1-theta)/dz ;   
            elseif (i== Nz ) && (j==1)
            % top left
                F(count_row, count_col-Nx) = (- theta  )/dz ;
                F(count_row, count_col) =((1-theta) +theta - (1-theta))/dz ;
-           % top right2*dt
+           % top right
            elseif (i== Nz ) && (j==Nx)
                F(count_row, count_col-Nx) = (- theta  )/dz ;
-               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dz ;
+               F(count_row, count_col) = ( - (1-theta))/dz ;
               
            % top row
            elseif  (i== Nz ) && (   j~=1) && (j~=Nx)        
                F(count_row, count_col-Nx) = (- theta  )/dz ;
-               F(count_row, count_col) = ((1-theta) +theta - (1-theta))/dz ;
+               F(count_row, count_col) = ( - (1-theta))/dz ;
                
                             % left wall
            elseif (j== 1 ) && (   i~=1) && (i~=Nz)
@@ -508,3 +511,12 @@ ylabel( ' z ')
  uw_2 = sqrt (sum(sum (error_uw.*error_uw)));
  r_2 = sqrt (sum (sum(error_r.*error_r)));
  p_2 = sqrt (sum( sum(error_p.*error_p)));
+
+ 
+ figure 
+plot(energy_sim,'g')
+hold on
+plot(energy,'b')
+xlabel('Time steps')
+ylabel('energy')
+legend('Numerical energy', 'analytic energy')
