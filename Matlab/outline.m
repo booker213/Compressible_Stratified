@@ -6,8 +6,8 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=4;
-Nz=4;
+Nx=8;
+Nz=8;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;

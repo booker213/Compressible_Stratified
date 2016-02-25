@@ -51,7 +51,7 @@ dr_0.interpolate(dr_0_expression)
 
 #Define trial and test functions
 (u,r,p) = TrialFunctions(W) # Velocity, density, pressure respectively
-(phi, xi, tau) = TestFunctions(W) # Test functions for velocity, density, pressure respectively
+(dFdu_vec, dFdr, dFdp) = TestFunctions(W) # Test functions for velocity, density, pressure respectively
 
 #Function Space for initial conditions
 
@@ -126,33 +126,33 @@ E_0 = assemble( (0.5*inner((u_),(u_))/r_0 + 0.5*pow(g,2)*pow(( r_ - p_/c_0),2)/(
 
 
 # Create linear problem
-# a =   ( u*phi + r*xi + p* sigma)*dx - 0.5*dt*Poisson_Bracket( u , r , p )
-# L =   ( u_*phi + r_*xi + p_* sigma)*dx + 0.5*dt*Poisson_Bracket( u_ , r_ , p_ )
+# a =   ( u*dFdu_vec + r*dFdr + p* dFdp)*dx - 0.5*dt*Poisson_Bracket( u , r , p )
+# L =   ( u_*dFdu_vec + r_*dFdr + p_* dFdp)*dx + 0.5*dt*Poisson_Bracket( u_ , r_ , p_ )
 
 #Define Poisson Bracket
 #Possibly as a python definition
 
-a0 = (dot(u, phi) + r*xi + p*tau)*dx
-a1 = - 0.5*timestep*(- dot (grad((g*g)/(N*N)*(r - p/c_0)), phi) + dot(grad(r_0*xi), u))*dx
-a2 = - 0.5*timestep*( dr_0*(((g*g)/(r_0*N))*(r - p/c_0)*phi[0] - xi*u[0]))*dx
-a3 = - 0.5*timestep*(g*r_0*(tau*u[0] - ( (g*g)/(r_0*N)*(p/(c_0*c_0)-r/c_0)+p/(r_0*c_0) )*phi[0] ) )*dx
-a4 = - 0.5*timestep*(- dot (grad(( (g*g*c_0*c_0)/(N)*(p/(c_0*c_0)-r/c_0)+p/(c_0) )), phi) + dot(grad(c_0*r_0*tau), u))*dx
-a5 = - 0.5*timestep*( -jump((g*g)/(N*N)*(r - p/c_0))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
-a6 = - 0.5*timestep*( jump(r_0*xi)*dot((1-theta)*u('-')+ theta*u('+'), n('-')))*dS
-a7 = - 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p/(c_0*c_0)-r/c_0)+p/(c_0) ))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
-a8 = - 0.5*timestep*( jump(c_0*r_0*tau)*dot((1-theta)*u('-')+ theta*u('+'), n('-')))*dS
+a0 = (dot(u, dFdu_vec) + r*dFdr + p*dFdp)*dx
+a1 = - 0.5*timestep*(- dot (grad((g*g)/(N*N)*(r - p/c_0)), dFdu_vec) + dot(grad(r_0*dFdr), u))*dx
+a2 = - 0.5*timestep*( dr_0*(((g*g)/(r_0*N))*(r - p/c_0)*dFdu_vec[0] - dFdr*u[0]))*dx
+a3 = - 0.5*timestep*(g*r_0*(dFdp*u[0] - ( (g*g)/(r_0*N)*(p/(c_0*c_0)-r/c_0)+p/(r_0*c_0) )*dFdu_vec[0] ) )*dx
+a4 = - 0.5*timestep*(- dot (grad(( (g*g*c_0*c_0)/(N)*(p/(c_0*c_0)-r/c_0)+p/(c_0) )), dFdu_vec) + dot(grad(c_0*r_0*dFdp), u))*dx
+a5 = - 0.5*timestep*( -jump((g*g)/(N*N)*(r - p/c_0))*dot((1-theta)*dFdu_vec('-')+ theta*dFdu_vec('+'), n('-')))*dS
+a6 = - 0.5*timestep*( jump(r_0*dFdr)*dot((1-theta)*u('-')+ theta*u('+'), n('-')))*dS
+a7 = - 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p/(c_0*c_0)-r/c_0)+p/(c_0) ))*dot((1-theta)*dFdu_vec('-')+ theta*dFdu_vec('+'), n('-')))*dS
+a8 = - 0.5*timestep*( jump(c_0*r_0*dFdp)*dot((1-theta)*u('-')+ theta*u('+'), n('-')))*dS
 
 a = a0 + a1 + a2 +  a3 + a4 + a5 + a6 + a7 + a8
 
-L0 = (dot(u_, phi) + r_*xi + p_*tau)*dx
-L1 = 0.5*timestep*(- dot (grad((g*g)/(N*N)*(r_ - p_/c_0)), phi) + dot(grad(r_0*xi), u_))*dx
-L2 = 0.5*timestep*( dr_0*(((g*g)/(r_0*N))*(r_ - p_/c_0)*phi[0] - xi*u[0]))*dx
-L3 = 0.5*timestep*(g*r_0*(tau*u_[0] - ( (g*g)/(r_0*N)*(p_/(c_0*c_0)-r_/c_0)+p_/(r_0*c_0) )*phi[0] ) )*dx
-L4 = 0.5*timestep*(- dot (grad(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) )), phi) + dot(grad(c_0*r_0*tau), u_))*dx
-L5 = 0.5*timestep*( -jump((g*g)/(N*N)*(r_ - p_/c_0))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
-L6 = 0.5*timestep*( jump(r_0*xi)*dot((1-theta)*u_('-')+ theta*u_('+'), n('-')))*dS
-L7 = 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) ))*dot((1-theta)*phi('-')+ theta*phi('+'), n('-')))*dS
-L8 = 0.5*timestep*( jump(c_0*r_0*tau)*dot((1-theta)*u_('-')+ theta*u_('+'), n('-')))*dS
+L0 = (dot(u_, dFdu_vec) + r_*dFdr + p_*dFdp)*dx
+L1 = 0.5*timestep*(- dot (grad((g*g)/(N*N)*(r_ - p_/c_0)), dFdu_vec) + dot(grad(r_0*dFdr), u_))*dx
+L2 = 0.5*timestep*( dr_0*(((g*g)/(r_0*N))*(r_ - p_/c_0)*dFdu_vec[0] - dFdr*u[0]))*dx
+L3 = 0.5*timestep*(g*r_0*(dFdp*u_[0] - ( (g*g)/(r_0*N)*(p_/(c_0*c_0)-r_/c_0)+p_/(r_0*c_0) )*dFdu_vec[0] ) )*dx
+L4 = 0.5*timestep*(- dot (grad(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) )), dFdu_vec) + dot(grad(c_0*r_0*dFdp), u_))*dx
+L5 = 0.5*timestep*( -jump((g*g)/(N*N)*(r_ - p_/c_0))*dot((1-theta)*dFdu_vec('-')+ theta*dFdu_vec('+'), n('-')))*dS
+L6 = 0.5*timestep*( jump(r_0*dFdr)*dot((1-theta)*u_('-')+ theta*u_('+'), n('-')))*dS
+L7 = 0.5*timestep*( -jump(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) ))*dot((1-theta)*dFdu_vec('-')+ theta*dFdu_vec('+'), n('-')))*dS
+L8 = 0.5*timestep*( jump(c_0*r_0*dFdp)*dot((1-theta)*u_('-')+ theta*u_('+'), n('-')))*dS
 
 L = L0 + L1 + L2 + L3 + L4 + L5 + L6 + L7 + L8
 
