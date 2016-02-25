@@ -75,13 +75,13 @@ n = FacetNormal(mesh)
 #     |             |
 #     |-------------|
 #          x = 0
-bcu_z_1 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 1, method="geometric")
-bcu_z_2 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 2, method="geometric")
+#bcu_z_1 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 1, method="geometric")
+#bcu_z_2 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 2, method="geometric")
 
 # ids 3,4 correspond to x=0, x=1
 
-bcu_x_1 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 3, method="geometric")
-bcu_x_2 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 4, method="geometric")
+#bcu_x_1 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 3, method="geometric")
+#bcu_x_2 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 4, method="geometric")
 
 
 n = FacetNormal(mesh)
