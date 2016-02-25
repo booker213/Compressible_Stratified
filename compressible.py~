@@ -24,7 +24,7 @@ timestep = 1./16.
 
 #Define Constants
 c_0 = Constant(1.0) # Speed of sound
-g = Constant(9.81) # Gravity
+g = Constant(1.) # Gravity
 N = Constant(2.0) # Bouyancy frequency
 theta = Constant(0.5) # Alternating Flux
 #Future make theta differ in elements, hopefully with a random seeding
