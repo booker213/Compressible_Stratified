@@ -6,8 +6,8 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=8;
-Nz=8;
+Nx=4;
+Nz=4;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
@@ -16,7 +16,7 @@ period = 1/sigma;
  %dt= 1/16;
 dt = period / (10*Nx^2);
 t=0;
-tend = period;
+tend = 3*period;
 theta = 0.5;
 
 steps = tend/dt;
@@ -469,7 +469,7 @@ p(i,j) = U(count_col);
 % Energy Evaluation
 for j = 1:Nx
     for i= 1: Nz
-H(i,j) = dv*(0.5./r_000(i,j))*(uu(i,j)^2+uw(i,j)^2) + dv*(0.5./(r_000 (i,j)* N)).*(r(i,j) - p(i,j))^2 + dv*0.5.* p(i,j)^2/r_000(i,j);
+H(i,j) = dv*(0.5/r_000(i,j))*(uu(i,j)^2+uw(i,j)^2) + dv*(0.5/(r_000 (i,j)* N)).*(r(i,j) - p(i,j))^2 + dv*0.5* p(i,j)^2/r_000(i,j);
     end
 
 end
