@@ -6,8 +6,8 @@ format long
 a = 0;
 Lx = 1;
 Lz = 1;
-Nx=8;
-Nz=8;
+Nx=4;
+Nz=4;
 k= Nx*Nz;
 k4 = 4*k;
 N = 2;
@@ -16,7 +16,7 @@ period = 1/sigma;
  %dt= 1/16;
 dt = period / (10*Nx^2);
 t=0;
-tend = 3*period;
+tend = period;
 theta = 0.5;
 
 steps = tend/dt;
@@ -34,9 +34,7 @@ r_000=zeros(Nz, Nx);
 U= zeros(k4,0);
 S = zeros(k4, k4 );
 F = zeros(k4, k4 );
-DIV = zeros(k4, k4 );
-P = zeros(k4, k4 );
-Q = zeros(k4, k4 );
+
 uu_initial = zeros(Nz, Nx);
 uw_initial = zeros(Nz, Nx);
 r_initial = zeros(Nz, Nx);
@@ -84,6 +82,7 @@ H(i,j) = dv*(0.5./r_000(i,j))*(uu_initial(i,j)^2+uw_initial(i,j)^2) + dv*(0.5./(
     end
 end
 energy(1,1) = sum(sum(H));
+H_0 = energy(1,1);
 energy_sim(1,1)= energy(1,1);
 
 
@@ -410,16 +409,16 @@ DIV = S + F;
 %% Make P, Q matrix
 % System to solve is P U^n+1 = Q U^n
 
-P = eye(k4) + dt*0.5*DIV;
-Q = eye(k4) - dt*0.5*DIV;
+P = eye(k4) - dt*0.5*DIV;
+Q = eye(k4) + dt*0.5*DIV;
 
-
+Inverse = (P\Q);
 %% Solve loop
 count_energy=1;
 while t < tend
  count_energy = count_energy+1;
 
-U=P\(Q*U);
+U = Inverse*U;
 t = t +dt;
 %% Exact Solution for timestep
     for i= 1: Nz
@@ -477,22 +476,22 @@ energy_sim(count_energy,1) = sum(sum(H));
 
 end
 
-% Plot exact solution
-figure
-contourf(X,Z,p_initial)
-title([' Exact Soln of pressure at t = ', num2str(t)])
-xlabel(' x ')
-ylabel( ' z ')
-colorbar
-
-
- figure
-contourf(X,Z,p)
-pause(0.1)
-title([' Numerical Soln of pressure at t = ', num2str(t)])
-colorbar
-xlabel(' x ')
-ylabel( ' z ')
+% % Plot exact solution
+% figure
+% contourf(X,Z,p_initial)
+% title([' Exact Soln of pressure at t = ', num2str(t)])
+% xlabel(' x ')
+% ylabel( ' z ')
+% colorbar
+% 
+% 
+%  figure
+% contourf(X,Z,p)
+% pause(0.1)
+% title([' Numerical Soln of pressure at t = ', num2str(t)])
+% colorbar
+% xlabel(' x ')
+% ylabel( ' z ')
 
 
  error_uu= uu - uu_initial;
@@ -514,9 +513,7 @@ ylabel( ' z ')
 
  
  figure 
-plot(energy_sim,'g')
-hold on
-plot(energy,'b')
-xlabel('Time steps')
+plot(linspace(0,tend, count_energy),(energy_sim-H_0)/H_0)
+title('Relative error in energy')
+xlabel('Periods')
 ylabel('energy')
-legend('Numerical energy', 'analytic energy')
