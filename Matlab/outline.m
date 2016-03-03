@@ -3,24 +3,24 @@ clear all
 close all
 format long
 %% mesh constants
-a = 0;
-Lx = 1;
-Lz = 1;
-Nx=4;
-Nz=4;
-k= Nx*Nz;
-k4 = 4*k;
-N = 2;
-sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2)))
-period = 1/sigma;
- %dt= 1/16;
-dt = period / (10*Nx^2);
-t=0;
-tend = period;
-theta = 0.5;
+a = 0; % Start of domain
+Lx = 1; % Length of domain in x direction
+Lz = 1; % Length of domain in z direction
+Nx=4; % Number of elements in x direction
+Nz=4; % Number of elements in z direction
+k= Nx*Nz; % Number of elements in domain
+k4 = 4*k; % Number of discrete variables in domain
+N = 2; % Buoyancy frequency
+sigma = sqrt( 0.5* ( 8*pi^2 + 0.25* (N+1)^2 + sqrt((8*pi^2 + 0.25* (N+1)^2)^2-16*pi^2*N^2))) % initial condition - wave frequency
+period = 1/sigma; % initial condition - wave period
+ %dt= 1/16; % time step
+dt = period / (10*Nx^2); % time step
+t=0; % initial time
+tend = period; % end time
+theta = 0.5; % flux constant, 0 < theta < 1
 
-steps = tend/dt;
-
+steps = tend/dt; % number of time steps taken
+% Storage for initial energy and discrete energy
 energy= zeros(ceil(steps+1),0);
 energy_sim = zeros(ceil(steps+1),0);
 %% Random theta
@@ -31,10 +31,12 @@ energy_sim = zeros(ceil(steps+1),0);
 r_000=zeros(Nz, Nx);
 
 %% Storage for variables 
+% Storage for velocity
 U= zeros(k4,0);
+% Storage for flux matrices
 S = zeros(k4, k4 );
 F = zeros(k4, k4 );
-
+% Storage for initial condition.
 uu_initial = zeros(Nz, Nx);
 uw_initial = zeros(Nz, Nx);
 r_initial = zeros(Nz, Nx);
@@ -50,11 +52,12 @@ error_p = zeros(Nz, Nx);
 % mesh information
 x_nodes = linspace(a,Lx,Nx+1);
 z_nodes = linspace(a,Lz,Nz+1);
-
+% element widths
 dx = x_nodes(2) - x_nodes(1);
 dz = z_nodes(2) - z_nodes(1);
+% element volume
 dv= dx*dz;
-
+% Location of element centres
 x_centres = a+dx/2 : dx : Lx;
 z_centres = a+dz/2 : dz : Lz;
 
@@ -89,6 +92,7 @@ energy_sim(1,1)= energy(1,1);
 
 %% Initial Condition
 % Reshape initial condition into column vector
+% U = [U,W,R,P]^T
 u_ = reshape(uu_initial', [k, 1]);
 w_ = reshape(uw_initial', [k, 1]);
 r_ = reshape(r_initial', [k, 1]);
@@ -99,12 +103,12 @@ U = vertcat(u_,w_,r_,p_);
 %% Make Source matrix
 % W source loop
 count_source_w = 2*k;
-% Density source
+% Density source for W
 for j = k+1:2*k
 count_source_w = count_source_w+1;
 S(j,count_source_w) = (-2/N);
 end
-% Pressure source
+% Pressure source for W
 for j = k+1:2*k
 count_source_w = count_source_w+1;
 S(j,count_source_w) = (2/N+2);
@@ -112,7 +116,7 @@ S(j,count_source_w) = (2/N+2);
 end
 
 % P source loop
-% Vertical velocity source
+% Vertical velocity source  for P
 count_source_p = k;
 for j = 3*k+1:4*k
 count_source_p = count_source_p +1;
@@ -122,6 +126,7 @@ end
 
 %% Make flux matrix
 % Flux for u
+% Flux depends on P
 count_col=3*k;
 count_row=0;
 for i = 1:Nz
@@ -176,6 +181,7 @@ for i = 1:Nz
 end
 
 % Flux for w
+% Flux depends on W
 count_col=3*k;
 count_row=k;
 for i = 1:Nz
@@ -230,6 +236,7 @@ for i = 1:Nz
 end
 
 % Flux for r
+% Flux depends on U and W
 count_col_u=0;
 count_col_w=k;
 count_row=2*k;
@@ -314,6 +321,7 @@ for i = 1:Nz
 end
 
 % Flux for p
+% Flux depends on U and W
 count_col_u=0;
 count_col_w=k;
 count_row=3*k;
