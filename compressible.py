@@ -49,6 +49,10 @@ dr_0 = Function(R)
 r_0.interpolate(r_0_expression)
 dr_0.interpolate(dr_0_expression)
 
+
+backgrounddensity_file = File('./Results/background_density.pvd')
+backgrounddensity_file << r_0
+
 #Define trial and test functions
 (u,r,p) = TrialFunctions(W) # Velocity, density, pressure respectively
 (dFdu_vec, dFdr, dFdp) = TestFunctions(W) # Test functions for velocity, density, pressure respectively
@@ -58,7 +62,8 @@ dr_0.interpolate(dr_0_expression)
 w_ = Function(W)
 (u_, r_, p_) = split(w_)
 w = Function(W)
-(u, r, p) = split(w)
+#(u, r, p) = split(w)
+
 #Set up element normal
 n = FacetNormal(mesh)
 
@@ -75,13 +80,6 @@ n = FacetNormal(mesh)
 #     |             |
 #     |-------------|
 #          x = 0
-#bcu_z_1 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 1, method="geometric")
-#bcu_z_2 = DirichletBC(W.sub(0).sub(0), Constant(0.0), 2, method="geometric")
-
-# ids 3,4 correspond to x=0, x=1
-
-#bcu_x_1 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 3, method="geometric")
-#bcu_x_2 = DirichletBC(W.sub(0).sub(1), Constant(0.0), 4, method="geometric")
 
 
 n = FacetNormal(mesh)
@@ -109,7 +107,7 @@ exact_p = Expression( " exp( -0.5*( N + 1 )*x[0] )*(omega / ( 4*pi*pi - omega*om
 
 (u_, r_, p_) = w_.split()
 
-(u, r, p) = w.split()
+#(u, r, p) = w.split()
 
 #Define initial conditions
 
@@ -122,7 +120,7 @@ u_.interpolate(Expression([" exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi
 # Interpolation to indexed pieces of a VFS is not currently implemented.
 
 #Initial Energy
-E_0 = assemble( (0.5*inner((u_),(u_))/r_0 + 0.5*pow(g,2)*pow(( r_ - p_/c_0),2)/(r_0*N) + 0.5* pow(p_,2)/(r_0*c_0))*dx )
+E0 = assemble( (0.5*inner((u_),(u_))/r_0 + 0.5*pow(g,2)*pow(( r_ - p_/c_0),2)/(r_0*N) + 0.5* pow(p_,2)/(r_0*c_0))*dx )
 
 
 # Create linear problem
@@ -146,7 +144,7 @@ a = a0 - 0.5*timestep*( a1 + a2 +  a3 + a4 + a5 + a6 + a7 + a8)
 
 L0 = (dot(u_, dFdu_vec) + r_*dFdr + p_*dFdp)*dx
 L1 = (- dot (grad((g*g)/(N*N)*(r_ - p_/c_0)), dFdu_vec) + dot(grad(r_0*dFdr), u_))*dx
-L2 = ( dr_0*(((g*g)/(r_0*N))*(r_ - p_/c_0)*dFdu_vec[0] - dFdr*u[0]))*dx
+L2 = ( dr_0*(((g*g)/(r_0*N))*(r_ - p_/c_0)*dFdu_vec[0] - dFdr*u_[0]))*dx
 L3 = (g*r_0*(dFdp*u_[0] - ( (g*g)/(r_0*N)*(p_/(c_0*c_0)-r_/c_0)+p_/(r_0*c_0) )*dFdu_vec[0] ) )*dx
 L4 = (- dot (grad(( (g*g*c_0*c_0)/(N)*(p_/(c_0*c_0)-r_/c_0)+p_/(c_0) )), dFdu_vec) + dot(grad(c_0*r_0*dFdp), u_))*dx
 L5 = ( -jump((g*g)/(N*N)*(r_ - p_/c_0))*dot((1-theta)*dFdu_vec('-')+ theta*dFdu_vec('+'), n('-')))*dS
@@ -173,11 +171,11 @@ u_file << u_
 
 out=Function(W)
 t = 0.0
-end = 1./16.
+end = 1.
 
-while (t <= end):
+while (t < end):
  t+=timestep
- #solve(a == L, out, bcs=[bcu_x_1,bcu_x_2,bcu_z_1,bcu_z_2])
+ 
  solve(a == L, out)
  u, r, p = out.split( )
 
@@ -189,12 +187,9 @@ while (t <= end):
  r_.assign(r)
  p_.assign(p)
 
-#Assemble Energy
-# E =assemble( (0.5*inner((u),(u))/r_0 + 0.5*pow(g,2)*pow(( r - p/c_0),2)/(r_0*N) + 0.5* pow(p,2)/(r_0*c_0))*dx )
- 
+ #Assemble Energy
+ E = assemble( (0.5*inner((u),(u))/r_0 + 0.5*pow(g,2)*pow(( r - p/c_0),2)/(r_0*N) + 0.5* pow(p,2)/(r_0*c_0))*dx )
+
+ print t, abs((E-E0)/E0)
 
 
-
-#Compile test
-#remove later on
-#print "t = ",  t ,". " "Energy, e = ", E_0
