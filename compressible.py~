@@ -9,7 +9,7 @@ from firedrake import *
 #Create Mesh
 m = 16
 mesh = UnitSquareMesh(m, m,  quadrilateral=quadrilateral)
-order_basis = 0 
+order_basis = 3 
 
 # Note x[0] = z
 #      x[1] = x
@@ -171,7 +171,7 @@ u_file << u_
 
 out=Function(W)
 t = 0.0
-end = 1.
+end = 20.
 
 while (t < end):
  t+=timestep
