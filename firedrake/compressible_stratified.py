@@ -163,7 +163,8 @@ p0.rename("Pressure")
 
 # Output initial conditions
 outfile.write(u0,rho0,p0, time = t)
-
+# File for energy output
+E_file = open('./Results/energy.txt', 'w')
 
 out=Function(W)
 
@@ -188,7 +189,9 @@ while (t < end):
  p0.assign(p)
  #Assemble Energy
  E = assemble( ((inner(u,u)/r_0 + (rho**2 - 2*rho*p/c_0 + (p/c_0)**2)/(r_0*N) + (p**2)/(r_0*c_0) )*0.5)*dx )
+ E_file.write('%-10s %-10s\n' % (t,abs((E-E0)/E0)))
  # Print time and energy drift, drift should be around machine precision.
  print t, abs((E-E0)/E0)
-
+# Close energy write
+E_file.close()
 
