@@ -172,7 +172,7 @@ out=Function(W)
 while (t < end):
  t+=dt
  
- solve(a == L, out)
+ solve(a == L, out, solver_parameters={'ksp_rtol': 1e-15})
  u, rho, p = out.split()
 
  # Assign appropriate name in results file
