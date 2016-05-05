@@ -115,6 +115,12 @@ E0 = assemble( ((inner(u0,u0)/r_0 + (rho0**2 - 2*rho0*p0/c_0 + (p0/c_0)**2)/(r_0
 # L =   ( u_*dFdu_vec + r_*dFdr + p_* dFdp)*dx + 0.5*dt*Poisson_Bracket( u_ , r_ , p_ )
 
 
+
+# Define discrete divergence
+#def div_u(u, p):
+	#return (dot(u, grad(p)))*dx + (jump(p)*dot((u('-')*(1-theta)+u('+')*theta), n('-')))*dS
+
+
 #Define varitional derivatives
 dHdu = u/r_0
 dHdrho = (rho - p/c_0)/(N*r_0)
