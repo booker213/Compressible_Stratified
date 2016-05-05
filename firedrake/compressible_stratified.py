@@ -8,7 +8,7 @@ from firedrake import *
 Nx = 16
 Nz = 16
 mesh = UnitSquareMesh(Nx, Nz,  quadrilateral=quadrilateral)
-order_basis = 4
+order_basis = 1
 
 # Note x[0] = z
 #      x[1] = x
@@ -41,8 +41,11 @@ P = FunctionSpace(mesh, "DG", order_basis)
 W =  V*R*P
 
 # Define Background Density
-r_0 = Function(R)
-dr_0 = Function(R)
+
+Ro = FunctionSpace(mesh, "CG", order_basis)
+
+r_0 = Function(Ro)
+dr_0 = Function(Ro)
 r_0.interpolate(Expression( "exp(-3.0*x[0])" ))
 dr_0.interpolate(Expression( "-3.0*exp(-3.0*x[0])" ))
 
