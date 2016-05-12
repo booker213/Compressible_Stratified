@@ -120,7 +120,7 @@ E0 = assemble( ( ( inner( u0 , u0 )/r_0 + ( rho0**2 - 2* rho0 *p0 / c_0 + (p0 / 
 
 # Define discrete divergence
 def div_u(u, p):
-	return (dot(u, grad(p)))*dx + (jump(p)*dot((u('-')*(1-theta)+u('+')*theta), n('-')))*dS
+	return (dot(u, grad(p)))*dx(domain=p.ufl_domain()) + (jump(p)*dot((u('-')*(1-theta)+u('+')*theta), n('-')))*dS
 
 (u0, rho0, p0) = split(w0)
 #Define varitional derivatives
