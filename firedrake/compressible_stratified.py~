@@ -5,11 +5,11 @@ from firedrake import *
 
 #Create Mesh
 # Chosen mesh is a squrare with m square elements.
-Nx = 16
-Nz = 16
+Nx = 32
+Nz = 32
 mesh = UnitSquareMesh(Nx, Nz,  quadrilateral=quadrilateral)
 order_basis = 0
-CG_order_basis = 1
+CG_order_basis = 0
 
 # Note x[0] = z
 #      x[1] = x
@@ -20,7 +20,7 @@ CG_order_basis = 1
 
 # Setup time conditions
 t = 0.0
-end = 1.
+end = 0.1
 
 # Declare timestep 
 dt = 1./32.
@@ -43,7 +43,7 @@ W =  V*R*P
 
 # Define Background Density
 
-Ro = FunctionSpace(mesh, "CG", CG_order_basis)
+Ro = FunctionSpace(mesh, "DG", CG_order_basis)
 
 r_0 = Function(Ro)
 dr_0 = Function(Ro)
@@ -111,6 +111,7 @@ u0.interpolate(Expression([" exp( -0.5*( N + 1 )*x[0] )* sin(2*pi*x[0])*cos(2*pi
 #Initial Energy
 E0 = assemble( ( ( inner( u0 , u0 )/r_0 + ( rho0**2 - 2* rho0 *p0 / c_0 + (p0 / c_0) **2)/(r_0 *N) + (p0 **2)/(r_0 * c_0) ) *0.5)*dx)
 
+print E0
 
 # Create linear problem
 # a =   ( u*dFdu_vec + r*dFdr + p* dFdp)*dx - 0.5*dt*Poisson_Bracket( u , r , p )
@@ -138,12 +139,17 @@ L1 = div_u ( dHdu0, c_0 * r_0 * dFdp )
 L2 = - div_u ( dFdu_vec , c_0 * r_0 * dHdp0 )
 L3 = div_u ( dHdu0 , r_0 * dFdrho)
 L4 = - div_u ( dFdu_vec , r_0 * dHdrho0)
-L5 = ( dr_0 * ( dHdrho0 * dFdu_vec[0] - dFdrho * dHdu0[0] ) )*dx
+L5 = ( dr_0 * ( dHdrho0 * dFdu_vec[0] - dFdrho * dHdu0[0] ) )*dx(domain=p.ufl_domain())
 L6 = ( g* r_0 * ( dFdp * dHdu0[0] - dHdp0 * dFdu_vec[0] ) )*dx
 
 L = L0 + 0.5 * dt * ( L1 + L2 + L3 + L4 + L5 + L6 )
 
 a = derivative(L0 - 0.5 * dt * ( L1  + L2 + L3 + L4 + L5 + L6  ), w0)
+
+
+#H_print = assemble ( div_u ( dHdu0, c_0 * r_0 * dHdp )  - div_u ( dHdu_vec , c_0 * r_0 * dHdp0 ) + div_u ( dHdu0 , r_0 * dHdrho) - div_u ( dHdu_vec , r_0 * dHdrho0)+( dr_0 * ( dHdrho0 * dHdu_vec[0] - dHdrho * dHdu0[0] ) )*dx(domain=p.ufl_domain()) +( g* r_0 * ( dHdp * dHdu0[0] - dHdp0 * dHdu_vec[0] ) )*dx )
+
+print H_print
 
 # Note that we have no boundary surface terms as n.dh/du = n.df/du = 0 at the boundaries
 
