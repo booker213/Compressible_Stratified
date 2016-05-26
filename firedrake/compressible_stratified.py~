@@ -6,10 +6,10 @@ from firedrake import *
 #Create Mesh
 # Chosen mesh is a squrare with m square elements.
 Nx = 32
-Nz = 32
+Nz = Nx
 mesh = UnitSquareMesh(Nx, Nz,  quadrilateral=quadrilateral)
 order_basis = 0
-CG_order_basis = 0
+
 
 # Note x[0] = z
 #      x[1] = x
@@ -20,10 +20,11 @@ CG_order_basis = 0
 
 # Setup time conditions
 t = 0.0
-end = 0.1
+
 
 # Declare timestep 
-dt = 1./32.
+dt = 1./( pow(Nx,2))
+end = 1.
 
 #Define Constants
 c_0 = Constant(1.0) # Speed of sound
@@ -43,12 +44,12 @@ W =  V*R*P
 
 # Define Background Density
 
-Ro = FunctionSpace(mesh, "DG", CG_order_basis)
+Ro = FunctionSpace(mesh, "DG", order_basis)
 
 r_0 = Function(Ro)
 dr_0 = Function(Ro)
 r_0.interpolate(Expression( "exp(-3.0*x[0])" ))
-dr_0 = r_0.dx(0)
+dr_0.interpolate(Expression( "-3.0*exp(-3.0*x[0])" ))
 
 # Output background density to check orientation
 
@@ -141,16 +142,29 @@ L3 = div_u ( dHdu0 , r_0 * dFdrho)
 L4 = - div_u ( dFdu_vec , r_0 * dHdrho0)
 L5 = ( dr_0 * ( dHdrho0 * dFdu_vec[0] - dFdrho * dHdu0[0] ) )*dx(domain=p.ufl_domain())
 L6 = ( g* r_0 * ( dFdp * dHdu0[0] - dHdp0 * dFdu_vec[0] ) )*dx
+L7 = ( dr_0 * ( - dFdp * dHdu0[0] + dHdp0 * dFdu_vec[0] ) )*dx
+L8 = ( dr_0 * ( - dHdrho0 * dFdu_vec[0] + dFdrho * dHdu0[0] ) )*dx(domain=p.ufl_domain())
 
-L = L0 + 0.5 * dt * ( L1 + L2 + L3 + L4 + L5 + L6 )
+L = L0 + 0.5 * dt * ( L1 + L2 + L3 + L4 + L5 + L6   )
 
-a = derivative(L0 - 0.5 * dt * ( L1  + L2 + L3 + L4 + L5 + L6  ), w0)
+a = derivative(L0 - 0.5 * dt * ( L1  + L2 + L3 + L4 + L5 + L6   ), w0)
 
 
-#H_print = assemble ( div_u ( dHdu0, c_0 * r_0 * dHdp )  - div_u ( dHdu_vec , c_0 * r_0 * dHdp0 ) + div_u ( dHdu0 , r_0 * dHdrho) - div_u ( dHdu_vec , r_0 * dHdrho0)+( dr_0 * ( dHdrho0 * dHdu_vec[0] - dHdrho * dHdu0[0] ) )*dx(domain=p.ufl_domain()) +( g* r_0 * ( dHdp * dHdu0[0] - dHdp0 * dHdu_vec[0] ) )*dx )
+#L_1_print = assemble ( div_u ( dHdu0, c_0 * r_0 * dHdp0 )  - div_u ( dHdu0 , c_0 * r_0 * dHdp0 ) )
 
-print H_print
+#print L_1_print
 
+#L_2_print = assemble ( div_u ( dHdu0 , r_0 * dHdrho0) - div_u ( dHdu0 , r_0 * dHdrho0) ) 
+
+#print L_2_print
+
+#l5_print = assemble ( ( dr_0 * ( dHdrho0 * dHdu0[0] - dHdrho0 * dHdu0[0] ) )*dx(domain=p.ufl_domain()) )
+
+#print l5_print
+
+#l6_print = assemble ( ( g* r_0 * ( dHdp0 * dHdu0[0] - dHdp0 * dHdu0[0] ) )*dx(domain=p.ufl_domain()) )
+
+#print l6_print 
 # Note that we have no boundary surface terms as n.dh/du = n.df/du = 0 at the boundaries
 
 
@@ -189,7 +203,7 @@ while (t < end):
     u0.assign(u)
     rho0.assign(rho)
     p0.assign(p)
-
+   
     #Assemble Energy
     E = assemble( ((inner(u,u)/r_0 + (rho**2 - 2*rho*p/c_0 + (p/c_0)**2)/(r_0*N) + (p**2)/(r_0*c_0) )*0.5)*dx )
     E_file.write('%-10s %-10s\n' % (t,abs((E-E0)/E0)))
@@ -197,6 +211,23 @@ while (t < end):
     # Print time and energy drift, drift should be around machine precision.
     print "At time %g, energy drift is %g" % (t,abs((E-E0)/E0))
 
+
+
+#L_1_print = assemble ( div_u ( dHdu0, c_0 * r_0 * dHdp0 )  - div_u ( dHdu0 , c_0 * r_0 * dHdp0 ) )
+
+#print L_1_print
+
+#L_2_print = assemble ( div_u ( dHdu0 , r_0 * dHdrho0) - div_u ( dHdu0 , r_0 * dHdrho0) ) 
+
+#print L_2_print
+
+#l5_print = assemble ( ( dr_0 * ( dHdrho0 * dHdu0[0] - dHdrho0 * dHdu0[0] ) )*dx(domain=p.ufl_domain()) )
+
+#print l5_print
+
+#l6_print = assemble ( ( g* r_0 * ( dHdp0 * dHdu0[0] - dHdp0 * dHdu0[0] ) )*dx(domain=p.ufl_domain()) )
+
+#print l6_print 
 
 
 
