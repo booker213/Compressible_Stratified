@@ -1,0 +1,305 @@
+
+\documentclass[a4paper,11pt]{article}
+
+%\usepackage{marvosym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{caption}
+
+
+% MARGIN SETTINGS
+\setlength{\voffset}{-1.1in}
+\setlength{\textheight}{740pt}
+%\setlength{\topmargin}{-0.5in}
+\setlength{\textwidth}{6.2in}
+\setlength{\oddsidemargin}{0.1in}
+\setlength{\evensidemargin}{0in}
+\setlength{\footskip}{20pt}
+
+\author{Will Booker}
+\title{Compressible Stratified Waves}
+
+\begin{document}
+
+\maketitle
+
+\section{Preliminaries}
+
+
+A Hamiltonian formulation is a system with either an finite or infinite number of degrees of freedom with a specified structure. The system's dynamics are then described in phase-space using two geometric objects: a total energy functional,  the Hamiltonian $\mathcal{H}$, and a skew symmetric Poisson bracket $\{ , \}$.
+As systems of fluid dynamics are continuous in space, we will be considering infinite dimensional dynamical systems. 
+
+
+
+ We now consider the general state of a functional $\mathcal{F}$ for  the system in consideration, the functional's time evolution is now described by the following equation,
+
+\begin{equation}
+ \frac{ d \mathcal{F}}{dt} =\{\mathcal{F},\mathcal{H}\} .
+\end{equation}
+The Poisson bracket has to satisfy the following conditions :
+
+\begin{itemize}
+\item skew-symmetry: $\{\mathcal{F},\mathcal{H}\}$ = $-\{\mathcal{H},\mathcal{F}\}$,
+\item linearity: $\{\alpha \mathcal{F} + \beta \mathcal{G},\mathcal{H}\}$ = $\alpha \{\mathcal{F},\mathcal{H}\}$ + $\beta\{\mathcal{G},\mathcal{H}\}$,
+\item Jacobi identity: $ \{\mathcal{F},\{\mathcal{G},\mathcal{H}\}\}$ + $ \{\mathcal{G},\{\mathcal{H},\mathcal{F}\}\}$ + $ \{\mathcal{H},\{\mathcal{F},\mathcal{G}\}\}$ = 0,
+\item Leibniz identity:   $\{\mathcal{F}\mathcal{G},\mathcal{H}\}$ = $\mathcal{F}\{\mathcal{G},\mathcal{H}\}$ + $\{\mathcal{F},\mathcal{H}\}\mathcal{G}$,
+\end{itemize}
+where $\alpha$, $\beta$ are constants, and $\mathcal{F}$, $\mathcal{G}$, $\mathcal{H}$ are arbitrary functionals. \\
+We  note that the skew-symmetry condition automatically yields energy conservation for the system,
+\[\frac{d \mathcal{H}}{dt} = \{\mathcal{H},\mathcal{H}\}= -\{\mathcal{H},\mathcal{H}\} = 0.\]
+We first  need to define a variational derivative, 
+\begin{equation}\label{eqns:var_deriv}
+\delta \mathcal{H} = \lim_{\epsilon \rightarrow 0}\frac{ \mathcal{H}( u+ \epsilon\delta u)-  \mathcal{H}(u)}{\epsilon}= \bigg ( \frac{\delta  \mathcal{H}}{\delta u}, \delta u \bigg)+  \mathcal{O}(\delta u^2),
+\end{equation}
+where $(\cdot,\cdot)$ is the inner product for the function space $\{ u\}$.
+
+
+
+\section{Continuum Description}
+
+In this report we will consider in a compressible fluid in a one-dimensional domain $\Omega$ . We will assume that viscous effects and temperature effects do not influence the motion of the fluid. We assume  acoustic speed of sound $c^2_0$ have been scaled such that  $c^2_0$ = 1  , and that the  equations of motions  have been linearised around a state of rest. We assume $\rho_0 = e^{-3z}$. This leads to the linear compressible stratified Euler equations
+
+\begin{equation}\label{eqns:euler}
+\begin{aligned}
+\frac{\partial (\rho_0 w) }{\partial t} &= - \frac{\partial \rho }{\partial z},\\
+\frac{\partial \rho }{\partial t} &= N^2 -\frac{\partial  (\rho_0 w) }{\partial z},
+\end{aligned}
+\end{equation}
+where $N^2$ = $\frac{1}{\rho_0}\frac{d\rho_0}{dz}$.
+We will consider $\Omega$ = $[0,1]$ in this report and we will take that $\partial \Omega$ i.e. the left and right end of the domain are taken to be solid walls, such that there is no normal flow through them. 
+\[ \hat{\underline{n}}u(z=0,1) = 0\]
+By seeking a harmonic wave solution to \eqref{eqns:euler}, one can show that a solution is 
+\begin{equation*}
+\begin{aligned}
+(\rho_0 w) &= e^{ -\frac{1}{2} N^2 z} \sin(m z )\sin(\sigma(t+\frac{1}{8})),\\
+\rho &= e^{ -\frac{1}{2} N^2 z} (\frac{N^2}{2\sigma}\sin (m z) + \frac{m}{\sigma}  \cos(m z)) \cos(\sigma (t + \frac{1}{8})),
+\end{aligned}
+\end{equation*}
+where a phase shift of $\frac{1}{8}$ has been introduced to ensure a non-zero solution at the initial time, $m$ is the wave number and $sigma$ can be determined as follows $\sigma^2$ = $\frac{1}{4}N^4 + m^2$. We will use this analytic solution to verify our numerical model and to provide our initial condition for the fluid's velocity and density.
+
+
+Hamiltonian dynamics of compressible fluid flow governed by equations \eqref{eqns:euler} is given by
+
+\begin{equation}\label{eqns:pb} \{ \mathcal{F},  \mathcal{H}\} = \int_\Omega \frac{\delta  \mathcal{H}}{\delta \rho}\rho_0 \frac{\partial}{\partial z}\frac{\delta  \mathcal{F}}{\delta (\rho_0 w)} - \frac{\delta  \mathcal{F}}{\delta \rho}\rho_0 \frac{\partial}{\partial z}\frac{\delta  \mathcal{H}}{\delta(\rho_0 w)} \text{ d}z,\end{equation}
+with its associated Hamiltonian energy functional
+\[  \mathcal{H} = \int_\Omega \frac{1}{2 \rho_0} ( (\rho_0 w)^2 + \rho^2) \text{ d}z.\]
+By using equation \eqref{eqns:var_deriv} we can show  that the variational derivatives for our associated Hamiltonian are
+
+\begin{equation}
+\frac{\delta \mathcal{H}}{\delta \rho} =\frac{\rho}{\rho_0}, \quad
+\frac{\delta \mathcal{H}}{\delta (\rho_0 w)}= \frac{(\rho_0 w)}{\rho_0}.
+\end{equation}
+
+%We will now show an equivalence between the Hamiltonian and the PDE representation of compressible fluid flow, by showing how to obtain the continuity equation from the Hamiltonian representation. We define the following functional for the density
+%
+%\[\mathcal{F}_\rho = \int_\Omega \rho (z,t) \Phi (z) \text{ d}z,\]
+% where $\Phi$ $\in$ $\mathcal{N}$ is an arbitrary test function in the following square integrable function space
+%\[\mathcal{N} = \{ \Phi \in L^2(\Omega) \} \].
+%
+%The continuity equation can be derived  by using the density functional along with its corresponding functional derivative in the bracket formulation \eqref{eqns:pb}.  We use that the domain in consideration, $\Omega$,  is fixed allowing us to interchange the  integral over the domain and the time derivative, 
+%\begin{equation}\label{functionalsderivs}
+%\begin{aligned}
+%\frac{d \mathcal{F}_\rho}{dt} &= \{\mathcal{F}_\rho, \mathcal{H} \},\\
+%\int_\Omega \frac{d}{dt}(\rho (z,t)  \Phi (z  ) \text{ d}z&=\int_\Omega - \frac{\partial u}{\partial z}\Phi \text{ d}z,\\
+%\int_\Omega \frac{\partial \rho}{\partial t}\Phi  \text{ d}z&= \int_\Omega - \frac{\partial u}{\partial z} \Phi \text{ d}z.
+%\end{aligned}
+%\end{equation}
+%As the choice of test function was arbitrary, this relationship holds for any $\Phi$ and thus we can derive the continuity equation  from equation \eqref{eqns:euler},
+%\begin{equation}
+% \frac{\partial \rho}{\partial t} = - \frac{\partial u}{\partial z} .
+%\end{equation}
+
+
+\section{ Discrete Description}
+
+ We now approximate the physical domain $\Omega$ with the computational domain $\Omega_h$, which consists of $e$ non-overlapping elements. The set of all edges in the computational domain is $\Gamma$, which consists of interior edges, $\partial e $ and edges which lie on the domain boundary $\partial \Omega$. We introduce discrete variable $\rho_h$ and $u_h$, which are approximations to their continuous counterparts. The Poisson bracket \eqref{eqns:pb} now becomes discrete
+
+\[ \{ \mathcal{F},  \mathcal{H}\} = \sum_e \int_e \frac{\delta  \mathcal{H}}{\delta \rho_h}\rho_0 \frac{\partial}{\partial z}\frac{\delta  \mathcal{F}}{\delta (\rho_0 w)_h} - \frac{\delta  \mathcal{F}}{\delta \rho_h}\rho_0 \frac{\partial}{\partial z}\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h} \text{ d}e.\]
+
+ We integrate the  Poisson bracket by parts and introduce a numerical flux to create a connection between neighbouring elements,
+
+\begin{equation}
+\begin{aligned}
+ \{ \mathcal{F},  \mathcal{H}\} = & \sum_e \int_e - \frac{\partial}{\partial z}(\frac{\delta  \mathcal{H}}{\delta \rho_h}\rho_0 ) \frac{\delta  \mathcal{F}}{\delta u_h} + \frac{\partial}{\partial z}(\frac{\delta  \mathcal{F}}{\delta \rho_h}\rho_0)\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h} \text{ d}e \\
+ &+ \sum_e \int_{\partial e }  \frac{\delta  \mathcal{H}}{\delta \rho_h}\rho_0\hat{\underline{n}} \widehat{\frac{\delta  \mathcal{F}}{\delta (\rho_0 w)_h}} - \frac{\delta  \mathcal{F}}{\delta \rho_h}\rho_0\hat{\underline{n}} \widehat{\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h}} \text{ d} S. 
+ \end{aligned}
+ \end{equation}
+ Wide hats on expressions in the boundary integrals indicate terms which will be approximated by numerical fluxes. We also note that the outward normal $\hat{\underline{n}}$ in our one-dimensional case is simply just $\pm 1$.
+  The  following numerical fluxes are chosen to approximate wide hat terms, where $-$  and $+$ indicate traces from the left and right elements connected to the face
+ \begin{equation}
+ \begin{aligned}
+  \widehat{\frac{\delta  \mathcal{F}}{\delta (\rho_0 w)_h}} &= (1-\theta) \frac{\delta  \mathcal{F}}{\delta (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{F}}{\delta (\rho_0 w)_h^+},  \\
+ \widehat{\frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h}}&= (1-\theta) \frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h^+} ,
+ \end{aligned}
+ \end{equation}
+ we will emphasis here that this choice of numerical flux was made to preserve the skew-symmetry of the Poisson bracket.  We note that by summing these interior boundary integrals over each element, they contribute twice to the Poisson bracket. Thus the contribution over each element can be rewritten to a summation over each interior boundary. We also now split contributions from $\Gamma$ into contributions from interior edges and boundary edges
+ \begin{equation}
+\begin{aligned}
+ \{ \mathcal{F},  \mathcal{H}\} = &  \sum_e \int_e - \frac{\partial}{\partial z}(\frac{\delta  \mathcal{H}}{\delta \rho_h}\rho_0 ) \frac{\delta  \mathcal{F}}{\delta u_h} + \frac{\partial}{\partial z}(\frac{\delta  \mathcal{F}}{\delta \rho_h}\rho_0)\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h} \text{ d}e \\
+ &+ \sum_{\partial e} \int_{\partial e } \bigg(  \frac{\delta  \mathcal{H}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{H}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^+} \bigg)\\
+ & - \bigg(  \frac{\delta  \mathcal{F}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{F}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^+} \bigg) \text{ d} \Gamma \\
+ &+ \sum_{\partial \Omega} \int_{\partial \Omega_h } \bigg(  \frac{\delta  \mathcal{H}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{H}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg (   \widehat{\frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h}} \bigg)\\
+ & - \bigg(  \frac{\delta  \mathcal{F}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{F}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg (   \widehat{\frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h}} \bigg) \text{ d}  \Gamma
+ \end{aligned}
+ \end{equation}
+ 
+ At our boundary edges we have solid wall boundaries and thus we have that 
+\[ u(z = 0, 1) = 0 \implies   \frac{\delta  \mathcal{H}}{\delta u}(z=0,1) = 0 \implies   \widehat{\frac{\delta  \mathcal{H}}{\delta u_h}}(z=0,1) = 0.\]
+However to preserve the skew symmetry of the bracket, we also require the flux on the test function $  \widehat{\frac{\delta  \mathcal{F}}{\delta u_h}}$ to vanish at these boundaries. Thus in our Poisson bracket we only have surface integral contributions from interior edges, and none from boundary edges.
+ This simplifies the Poisson bracket to 
+ \begin{equation}\label{eqns:fdpb}
+\begin{aligned}
+ \{ \mathcal{F},  \mathcal{H}\} = &  \sum_e \int_e - \frac{\partial}{\partial z}(\frac{\delta  \mathcal{H}}{\delta \rho_h}\rho_0 ) \frac{\delta  \mathcal{F}}{\delta u_h} + \frac{\partial}{\partial z}(\frac{\delta  \mathcal{F}}{\delta \rho_h}\rho_0)\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h} \text{ d}e \\
+ &+ \sum_{\partial e}\int_{\partial e } \bigg(  \frac{\delta  \mathcal{H}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{H}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^+} \bigg)\\
+ & - \bigg(  \frac{\delta  \mathcal{F}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{F}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^+} \bigg) \text{ d} \Gamma.
+ \end{aligned}
+ \end{equation}
+
+The bracket \eqref{eqns:fdpb} is the Poisson bracket used for the Firedrake implementation. For the MATLAB implementation, we now take separate the derivatives of the background stratification and the functionals of $\rho$,
+
+ \begin{equation}\label{eqns:matlabpb}
+\begin{aligned}
+ \{ \mathcal{F},  \mathcal{H}\} = &  \sum_e \int_e - \frac{\partial}{\partial z}(\rho_0 ) \frac{\delta  \mathcal{H}}{\delta \rho_h} \frac{\delta  \mathcal{F}}{\delta u_h} + \frac{\partial}{\partial z}(\rho_0)\frac{\delta  \mathcal{F}}{\delta \rho_h}\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h} \\
+  &- \frac{\partial}{\partial z}(\frac{\delta  \mathcal{H}}{\delta \rho_h}) \frac{\delta  \mathcal{F}}{\delta u_h} + \rho_0  \frac{\partial}{\partial z}(\frac{\delta  \mathcal{F}}{\delta \rho_h}\rho_0)\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h} \text{ d}e \\
+ &+ \sum_{\partial e}\int_{\partial e } \bigg(  \frac{\delta  \mathcal{H}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{H}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^+} \bigg)\\
+ & - \bigg(  \frac{\delta  \mathcal{F}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{F}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^+} \bigg) \text{ d} \Gamma.
+ \end{aligned}
+ \end{equation}
+
+\section{Finite Volume scheme }
+
+
+We now wish to relate our numerical solution functions to the functionals in our Poisson bracket \eqref{eqns:matlabpb}.
+By expanding  our numerical solution in the local basis functions
+\[ (\rho_0 w)_h(z,t) = \sum_\gamma (\rho_0 W)_\gamma (t) \phi_\gamma(z), \quad \rho_h(z,t) = \sum_\gamma R_\gamma (t) \phi_\gamma(z).\]
+we can define a relation between the two quantities. 
+In a  Finite Volume discretisation, we only have one constant basis function which we will take to be equal to 1, $\phi_\gamma = 1$ and we will now drop the subscript $\gamma$.
+A local mass matrix can now be defined as  
+\[ M = \int_e \phi \phi \text{ d}e = \Delta z.\]
+Functional and function derivatives can now be shown to be related by
+\[  \frac{\delta  \mathcal{F}}{\delta u_h}  =  M^{-1} \frac{\partial F}{\partial (\rho_0 W)} \phi = \frac{1}{\Delta z}  \frac{\partial F}{\partial (\rho_0 W)},\]
+with a similar relation for the density terms, on each element $e$.
+As the solution expansion coefficients depend only on time, then the spatial derivative terms on the functionals  in \eqref{eqns:matlabpb} are now zero. This leads to the following discrete Poisson bracket 
+
+
+ \begin{equation}
+\begin{aligned}
+ \{ \mathcal{F},  \mathcal{H}\} &= \sum_e \bigg( \frac{\partial H }{\partial R } \frac{\partial F}{\partial\rho_0 W} + \frac{\partial F }{ \partial R} \frac{\partial H}{ \partial \rho_0 W} \bigg)\frac{1}{(\Delta z)^2} \int_e \frac{d\rho_0}{dz} \text{ d} e \\
+ &+ \sum_\Gamma \bigg ( \frac{\partial H}{\partial R_-}\frac{\partial F}{\partial (\rho_0 W)_-} - \frac{\partial F}{\partial R_-}\frac{\partial H}{\partial (\rho_0 W)_-}\bigg  ) \frac{1-\theta}{(\Delta z)^2}\int_{\partial e} \rho_0^- \text{ d} \Gamma\\ &+  \bigg  ( \frac{\partial H}{\partial R-}\frac{\partial F}{\partial (\rho_0 W)_+} - \frac{\partial F}{\partial R_-}\frac{\partial H}{\partial (\rho_0 W)_+}\bigg  ) \frac{\theta}{(\Delta z)^2} \int_{\partial e} \rho_0^- \text{ d} \Gamma\\
+ & + \bigg  ( - \frac{\partial H}{\partial R_+}\frac{\partial F}{\partial (\rho_0 W)_-} + \frac{\partial F}{\partial R_+}\frac{\partial H}{\partial (\rho_0 W)_-}\bigg  ) \frac{1-\theta}{(\Delta z)^2}\int_{\partial e} \rho_0^+ \text{ d} \Gamma\\  &+ \bigg  ( - \frac{\partial H}{\partial R_+}\frac{\partial F}{\partial (\rho_0 W)_+} + \frac{\partial F}{\partial R_+}\frac{\partial H}{\partial (\rho_0 W)_+}\bigg  ) \frac{\theta}{(\Delta z)^2}\int_{\partial e} \rho_0^+ \text{ d} \Gamma .
+ \end{aligned}
+ \end{equation}
+
+We now apply quadrature to the integrals involving the background stratification, the integrals over the face of the element are simply point evaluations of the background stratification on the face. We will apply midpoint quadrature to integrals over the elements, such that we take the centre value of the stratification, $\rho_{0{{}_h}}$.
+The discrete Hamiltonian now becomes 
+\[ H = \sum_e \frac{\Delta z}{2 \rho_{0{{}_h}}}\bigg ( (\rho_0 W)^2 + R^2 \bigg).\]
+
+\subsection{Hamiltonian FV model}
+ In this section we will derive relations for internal elements in our Finite Volume scheme. By substituting the discrete Hamiltonian derivatives into our Poisson bracket, we yield the following relation
+ 
+  \begin{equation}
+\begin{aligned}
+ \{ \mathcal{F},  \mathcal{H}\} &= \sum_e \bigg( R \frac{\partial F}{\partial \rho_0 W} + \frac{\partial F }{\partial R}\rho_0 W \bigg)\frac{1}{\rho_{0{{}_h}}} \frac{d\rho_{0{{}_h}}}{dz}\\
+  &+ \sum_\Gamma \bigg ( R_-\frac{\partial F}{\partial (\rho_0 W)_-} - \frac{\partial F}{\partial R_-} (\rho_0 W)_-\bigg  ) \frac{(1-\theta)\rho^-_{0{{}_{\partial e}}}}{\rho_{0{{}_h}}^-\Delta z} \\ &+  \bigg  ( \frac{R_-}{\rho_{0{{}_h}}^-}\frac{\partial F}{\partial (\rho_0 W)_+} - \frac{\partial F}{\partial R_-} \frac{(\rho_0 W)_+}{\rho_{0{{}_h}}^+}\bigg  ) \frac{\theta \rho^-_{0{{}_{\partial e}}}}{\Delta z}\\
+ & + \bigg  ( - \frac{ R_+}{\rho_{0{{}_h}}^+}\frac{\partial F}{\partial (\rho_0 W)_-} + \frac{\partial F}{\partial R_+} \frac{(\rho_0 W)_-}{\rho_{0{{}_h}}^-}\bigg  ) \frac{(1-\theta) \rho^+_{0{{}_{\partial e}}}}{\Delta z}\\  &+ \bigg  ( -  R_+\frac{\partial F}{\partial (\rho_0 W)_+} + \frac{\partial F}{\partial R_+}(\rho_0 W)_+\bigg  )\frac{\theta \rho^+_{0{{}_{\partial e}}}}{\rho_{0{{}_h}}^+\Delta z}.
+ \end{aligned}
+ \end{equation}
+We will consider the two faces between three elements $e-1$, $e$ and, $e+ 1$. We first consider the face between the elements  $e-1$ and  $e$, the Poisson bracket yields
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial (\rho_0 W)_{e-1}}R_{e-1}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}  + \frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e-1} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}\\ - \frac{\partial F}{\partial (\rho_0 W)_{e-1}}R_{e}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}  -\frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}\\
+-\frac{\partial F}{\partial R_{e-1}}(\rho_0 W)_{e-1}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}  -\frac{\partial F}{\partial R_{e-1}}(\rho_0 W)_{e} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z} \\+\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e-1}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}  +\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}.
+\end{aligned}
+\end{equation}
+For the face between the elements  $e$ and  $e+1$, the Poisson bracket yields
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}+ \frac{\partial F}{\partial (\rho_0 W)_{e+1}}R_{e} \frac{(\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}\\ - \frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e+1}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}  -\frac{\partial F}{\partial (\rho_0 W)_{e+1}}R_{e+1}\frac{(\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}\\
+-\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}  -\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e+1} \frac{(\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}\\+\frac{\partial F}{\partial R_{e+1}}(\rho_0 W)_{e}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}  +\frac{\partial F}{\partial R_{e+1}}(\rho_0 W)_{e+1} \frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}.
+\end{aligned}
+\end{equation}
+By collecting the contributions to an element $e$ we obtain the following scheme for internal elements
+\begin{equation}
+\begin{aligned}
+\frac{d F}{d t} & =\frac{\partial F}{\partial (\rho_0 W)_{e}}\frac{1}{\Delta z}\bigg [ \Delta z R_e \frac{1}{\rho^e_{0{{}_h}}} \frac{d\rho^e_{0{{}_h}}}{dz}  + R_{e-1} \theta \frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}} - R_{e} \theta\frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}}+ R_{e}(1-\theta)\frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e}} - R_{e+1}(1-\theta)   \frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}}                      \bigg]\\
+&+\frac{\partial F}{\partial R_{e}}\frac{1}{\Delta z}\bigg [ \Delta z (\rho_0 W)_e \frac{1}{\rho^e_{0{{}_h}}} \frac{d\rho^e_{0{{}_h}}}{dz} +   (\rho_0 W)_{e-1}(1-\theta)\frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}}  + (\rho_0 W)_{e} \theta\frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}}  - (\rho_0 W)_{e}(1-\theta)\frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e}}   \\ &- (\rho_0 W)_{e+1}\theta \frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}}       \bigg].
+\end{aligned}
+\end{equation}
+
+We will note here the element ODEs for internal elements that will be yielded from the above scheme,
+\begin{equation}
+\begin{aligned}
+\frac{d (\rho_0 W)_e}{d t} & = \frac{1}{\Delta z}\bigg [   \Delta z R_e \frac{1}{\rho^e_{0{{}_h}}} \frac{d\rho^e_{0{{}_h}}}{dz}  + R_{e-1} \theta \frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}} - R_{e} \theta\frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}}+ R_{e}(1-\theta)\frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e}} - R_{e+1}(1-\theta)   \frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}}              \bigg]\\
+\frac{d R_e}{d t} & = \frac{1}{\Delta z}\bigg [ \Delta z (\rho_0 W)_e \frac{1}{\rho^e_{0{{}_h}}} \frac{d\rho^e_{0{{}_h}}}{dz} +   (\rho_0 W)_{e-1}(1-\theta)\frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}}  + (\rho_0 W)_{e} \theta\frac{\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}}  - (\rho_0 W)_{e}(1-\theta)\frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e}}   \\  &- (\rho_0 W)_{e+1}\theta \frac{\rho_0^{\partial e + \frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}}      \bigg].
+\end{aligned}
+\end{equation}
+
+\subsection{ Solid Wall boundary conditions}
+
+In this section we will consider  how the solid wall boundaries at $z$ = 0 and $z$ = $1$ are modeled. For the element 1, there is no left boundary contribution
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}+ \frac{\partial F}{\partial (\rho_0 W)_{e+1}}R_{e} \frac{(\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}\\ - \frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e+1}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}  -\frac{\partial F}{\partial (\rho_0 W)_{e+1}}R_{e+1}\frac{(\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}\\
+-\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}  -\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e+1} \frac{(\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}\\+\frac{\partial F}{\partial R_{e+1}}(\rho_0 W)_{e}\frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}  +\frac{\partial F}{\partial R_{e+1}}(\rho_0 W)_{e+1} \frac{(1-\theta)\rho_0^{\partial e +\frac{1}{2}}}{\rho_{0{{}_h}}^{e+1}\Delta z}.
+\end{aligned}
+\end{equation}
+Counting the contributions to element $1$ yields
+\begin{equation}
+\begin{aligned}
+\frac{d F}{d t} &=\frac{\partial F}{\partial (\rho_0 W)_{1}}\frac{1}{\Delta z}\bigg [    \Delta z R_1 \frac{1}{\rho^1_{0{{}_h}}} \frac{d\rho^1_{0{{}_h}}}{dz}   + R_{1}(1-\theta)\frac{\rho_0^{\partial 1 \frac{1}{2}}}{\rho_{0{{}_h}}^{1}} - R_{2}(1-\theta)   \frac{\rho_0^{\partial 1  \frac{1}{2}}}{\rho_{0{{}_h}}^{2}}       \bigg]\\
+&+\frac{\partial F}{\partial R_{1}}\frac{1}{\Delta z}\bigg [     - \Delta z (\rho_0 W)_1 \frac{1}{\rho^1_{0{{}_h}}} \frac{d\rho^1_{0{{}_h}}}{dz}   - (\rho_0 W)_{1}(1-\theta)\frac{\rho_0^{\partial 1 \frac{1}{2}}}{\rho_{0{{}_h}}^{1}}   \\ &- (\rho_0 W)_{2}\theta \frac{\rho_0^{\partial 1 \frac{1}{2}}}{\rho_{0{{}_h}}^{2}}     \bigg].
+\end{aligned}
+\end{equation}
+For the right most element, which we will label element $Nz$ there is no right boundary contribution
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial (\rho_0 W)_{e-1}}R_{e-1}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}  + \frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e-1} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}\\ - \frac{\partial F}{\partial (\rho_0 W)_{e-1}}R_{e}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}  -\frac{\partial F}{\partial (\rho_0 W)_{e}}R_{e} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}\\
+-\frac{\partial F}{\partial R_{e-1}}(\rho_0 W)_{e-1}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}  -\frac{\partial F}{\partial R_{e-1}}(\rho_0 W)_{e} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z} \\+\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e-1}\frac{(1-\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e-1}\Delta z}  +\frac{\partial F}{\partial R_{e}}(\rho_0 W)_{e} \frac{(\theta)\rho_0^{\partial e - \frac{1}{2}}}{\rho_{0{{}_h}}^{e}\Delta z}.
+\end{aligned}
+\end{equation}
+Counting the contributions to element $Nz$ yields
+\begin{equation}
+\begin{aligned}
+\frac{d F}{d t}&=\frac{\partial F}{\partial (\rho_0 W)_{Nz}}\frac{1}{\Delta z}\bigg [    \Delta z R_{Nz} \frac{1}{\rho^{Nz}_{0{{}_h}}} \frac{d\rho^{Nz}_{0{{}_h}}}{dz}  + R_{Nz-1} \theta \frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz-1}} - R_{Nz} \theta\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz}}       \bigg]\\
+&+\frac{\partial F}{\partial R_{Nz}} \frac{1}{\Delta z}\bigg [    \Delta z (\rho_0 W)_{Nz} \frac{1}{\rho^{}Nz}_{0{{}_h}}} \frac{d\rho^{Nz}_{0{{}_h}}}{dz} +   (\rho_0 W)_{Nz-1}(1-\theta)\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz-1}}  + (\rho_0 W)_{Nz} \theta\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz}}          \bigg].
+\end{aligned}
+\end{equation}
+
+
+
+\section{Timestepper}
+\subsection{Implicit Midpoint rule}
+An implicit midpoint rule is used, as it is a known property that the scheme preserves any property of the underlying ODE upto a quadratic order. This will be sufficient for our scheme to preserve its conservation of energy.
+
+\begin{equation} \begin{aligned} \dot {y} &= f(x,y),\\
+\frac{y^{n+1}- y^n}{\Delta t} &= \frac{ f(x^{n+1}, y^{n+1}) + f(x^n, y^n)}{2}, \end{aligned}\end{equation}
+%\subsection{Stormer Verlet}
+%
+%The Stormer-Verlet timestepper involves taking 2 half steps of one variable, and then a full step of the other. If we denote our FV scheme by the following
+%\begin{equation}  \dot {(\rho_0 W)} = f(R), \quad \dot {R} = f((\rho_0 W)), \\\end{equation}
+%then a Stormer-Verlet integration scheme would be 
+%
+%
+%\begin{equation} \begin{aligned} R^{n+\frac{1}{2}} &= R + \frac{1}{2}\Delta t f((\rho_0 W)^n),\\
+%(\rho_0 W)^{n+1} &= (\rho_0 W)^{n} + \Delta t f(R^{n+\frac{1}{2}}), \\
+%R^{n+1} &= R^{n+\frac{1}{2} } + \frac{1}{2} \Delta t f((\rho_0 W)^{n+1}).\end{aligned}\end{equation}
+%
+%The Stormer-Verlet scheme does not conserve the exact energy of the ODE system, it does however conserve a shadow energy that is bounded. As the Stormer-Verlet scheme is order 2, we would expect that this band of energy to also be an order 2 property. 
+
+\section{Results}
+
+\subsection{Energy}
+
+
+\subsection{ Error in density and velocity}
+
+
+
+
+
+\end{document}
