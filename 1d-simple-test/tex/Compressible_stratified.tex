@@ -67,12 +67,12 @@ In this report we will consider in a compressible fluid in a one-dimensional dom
 \begin{equation}\label{eqns:euler}
 \begin{aligned}
 \frac{\partial (\rho_0 w) }{\partial t} &= - \frac{\partial \rho }{\partial z},\\
-\frac{\partial \rho }{\partial t} &= N^2 -\frac{\partial  (\rho_0 w) }{\partial z},
+\frac{\partial \rho }{\partial t} &= N^2 \rho_0 w -\frac{\partial  (\rho_0 w) }{\partial z},
 \end{aligned}
 \end{equation}
 where $N^2$ = $\frac{1}{\rho_0}\frac{d\rho_0}{dz}$.
 We will consider $\Omega$ = $[0,1]$ in this report and we will take that $\partial \Omega$ i.e. the left and right end of the domain are taken to be solid walls, such that there is no normal flow through them. 
-\[ \hat{\underline{n}}u(z=0,1) = 0\]
+\[ \hat{\underline{n}}\rho_0 w (z=0,1) = 0\]
 By seeking a harmonic wave solution to \eqref{eqns:euler}, one can show that a solution is 
 \begin{equation*}
 \begin{aligned}
