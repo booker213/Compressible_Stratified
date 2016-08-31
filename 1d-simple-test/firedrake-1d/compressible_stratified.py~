@@ -8,7 +8,7 @@ from firedrake import *
 # Create mesh
 # Current mesh is a unit line  with Nx elements.
 
-Nx = 3
+Nx = 16
 mesh = UnitIntervalMesh(Nx)
 
 # Declare timestep
@@ -18,11 +18,11 @@ dt = 1./( pow(Nx,2))
 # Period of waves considered in test is 1s
 # We will consider 3 periods initially
 t = 0.
-end = dt
+end =  1000.
 
 # Declare order of the basis in the elements
 # Test problem will consider order 0 - a finite volume scheme
-order_basis = 0
+order_basis = 2
 quad_degree = 20
 # Declare flux indicator function
 theta = Constant(0.6)
@@ -63,7 +63,7 @@ r_0_reciprocal.interpolate(Expression( "1/exp(-3.0*x[0])" ))
 V = VectorFunctionSpace(mesh, "DG", order_basis)
 R = FunctionSpace(mesh, "DG", order_basis)
 
-W = V*R
+W = V*R*V*R
 
 
 
@@ -74,11 +74,31 @@ w0 = Function(W)
 
 
 # Interpolate expressions
-u0,rho0 = w0.split()
+u0,rho0, dHdu0, dHdrho0 = w0.split()
 
 u0.interpolate(Expression("exp(-0.5* N_sq * x[0])* sin ( m * x[0])*sin(sigma*0.125)", N_sq = N_sq, m = m , sigma = sigma ))
 
 rho0.interpolate(Expression("exp(-0.5* N_sq * x[0])*((N_sq / (2 * sigma))* sin ( m * x[0])+ m / sigma * cos ( m * x[0]))*cos(sigma*0.125)", N_sq = N_sq, m = m , sigma = sigma ))
+
+# Project initial variational derivatives
+
+q = TrialFunction(V)
+q_test = TestFunction(V)
+
+a_u_project = dot(q ,  q_test) * dx(degree = quad_degree)
+L_u_project = dot (u0 / r_0_project ,  q_test) * dx(degree = quad_degree)
+
+solve ( a_u_project == L_u_project , dHdu0 , solver_parameters={'ksp_rtol': 1e-14} )
+
+b = TrialFunction(R)
+b_test = TestFunction(R)
+
+a_rho_project = b * b_test * dx(degree = quad_degree)
+L_rho_project = rho0 / r_0_project * b_test * dx(degree = quad_degree)
+
+solve ( a_rho_project == L_rho_project , dHdrho0, solver_parameters={'ksp_rtol': 1e-14} )
+
+
 
 # Assemble initial energy
 E0 = assemble ( (0.5/r_0_project*(inner(u0,u0) + rho0**2))*dx(degree = quad_degree))
@@ -107,15 +127,15 @@ n = FacetNormal(mesh)
 
 # Define trial and test functions on the mixed space
 
-(u, rho) = TrialFunctions(W)
-(dFdu_vec, dFdrho) = TestFunctions(W)
+(u, rho, dHdu, dHdrho) = TrialFunctions(W)
+(dFdu_vec, dFdrho, dFdu_project, dFdrho_project) = TestFunctions(W)
 
 #Define varitional derivatives
 
-(u0,rho0) = split(w0)
+(u0,rho0, dHdu0, dHdrho0) = split(w0)
 
-dHdu0 = u0/r_0_project
-dHdrho0 = rho0/r_0_project
+#dHdu0 = u0/r_0_project
+#dHdrho0 = rho0/r_0_project
 
 
 # Define discrete divergence operator
@@ -130,18 +150,21 @@ L2 = div_u(dHdu0, r_0_project * dFdrho)
 
 L = L0 + 0.5 * dt * ( L1 + L2   )
 
-a = derivative(L0 - 0.5 * dt * ( L1  + L2 ), w0)
+a1 = ( dot(dHdu , dFdu_project) - dot(u / r_0_project ,  dFdu_project) ) * dx(degree = quad_degree)
+a2 = ( dHdrho * dFdrho_project - (rho / r_0_project )* dFdrho_project ) *dx(degree = quad_degree)
+
+a = derivative(L0 - 0.5 * dt * ( L1  + L2 ), w0) + a1 + a2
  
-A = assemble(a, nest=False)
+#A = assemble(a, nest=False)
 
-vals = A.M.values
+#vals = A.M.values
 
-print vals
+#print vals
 
 # Storage for visualisation
 outfile = File('./Results/compressible_stratified_results.pvd')
 
-u0,rho0 = w0.split()
+u0,rho0,dHdu0,dHdrho0 = w0.split()
 
 u0.rename("Velocity")
 rho0.rename("Density")
@@ -167,7 +190,7 @@ while (t < end):
     t+= dt
  
     solve(a == L, out, solver_parameters={'ksp_rtol': 1e-14})
-    u, rho = out.split()
+    u, rho, dHdu, dHdrho = out.split()
 
     # Assign appropriate name in results file
     u.rename("Velocity")
@@ -179,7 +202,9 @@ while (t < end):
     # Assign output as previous timestep for next time update
     u0.assign(u)
     rho0.assign(rho)
-
+    dHdu0.assign(dHdu)
+    dHdrho0.assign(dHdrho)
+ 
     # Assemble initial energy
     E = assemble ( (0.5/r_0_project*(inner(u0,u0) + rho0**2))*dx(degree = quad_degree))
  
