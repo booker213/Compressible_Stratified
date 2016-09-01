@@ -1,0 +1,1 @@
+Modification of MATLAB script to resolve oscillatory energy behaviour without a drift.
