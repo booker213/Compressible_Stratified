@@ -1,5 +1,10 @@
 from firedrake import *
 
+try:
+  import matplotlib.pyplot as plt
+except:
+  warning("Matplotlib not imported")
+
 # Script to solve compressible stratified waves in upto three dimensions
 # c^2_0 and gravity will be considered to be scaled to be equal to 1.
 
@@ -18,7 +23,7 @@ dt = 1./( pow(Nx,2))
 # Period of waves considered in test is 1s
 # We will consider 3 periods initially
 t = 0.
-end =  1000.
+end =  1.
 
 # Declare order of the basis in the elements
 # Test problem will consider order 0 - a finite volume scheme
@@ -146,6 +151,7 @@ a = derivative(L0 - 0.5 * dt * ( L1  + L2 ), w0) + a1 + a2
 # Storage for visualisation
 outfile = File('./Results/compressible_stratified_results.pvd')
 
+
 u0,rho0,dHdu0,dHdrho0 = w0.split()
 
 u0.rename("Velocity")
@@ -154,7 +160,8 @@ rho0.rename("Density")
 
 # Output initial conditions
 outfile.write(u0,rho0, time = t)
-
+velocity = []
+density = []
 
 out = Function(W)
 # File for energy output
@@ -179,8 +186,11 @@ while (t < end):
     rho.rename("Density")
  
     # Output results
-    #outfile.write(u, rho, time =t)
- 
+    outfile.write(u, rho, time =t)
+    
+    velocity.append(Function(u))
+    #density.append(Function(rho))
+    
     # Assign output as previous timestep for next time update
     u0.assign(u)
     rho0.assign(rho)
@@ -194,6 +204,18 @@ while (t < end):
     # Print time and energy drift, drift should be around machine precision.
     print "At time %g, energy drift is %g" % (t, E-E0)
 
+
+
+
+
+try:
+ plot(velocity)
+except Exception as e:
+ warning("Cannot plot figure. Error msg: '%s'" % e.message)
+try:
+ plt.show()
+except Exception as e:
+ warning("Cannot show figure. Error msg: '%s'" % e.message)
 
 # Create analytic solutions for error analysis
 exact_rho= Function(R)
@@ -212,12 +234,7 @@ exact_u.interpolate(Expression("exp(-0.5* N_sq * x[0])* sin ( m * x[0])*sin(sigm
 error_u = errornorm(u, exact_u,  norm_type='L2')
 print "At time %g, l2 error in x-velocity is %g" % (t, error_u)
 
-#localenergyfile = File('./Results/local_energy.pvd')
 
-#energy_local = Function(R)
-#energy_local.interpolate(dot(u,u)+rho*rho)
-
-#localenergyfile.write(energy_local, time=t)
 
 # Close energy write
 E_file.close()
