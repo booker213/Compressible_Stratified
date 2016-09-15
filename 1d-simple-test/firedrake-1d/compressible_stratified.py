@@ -27,7 +27,7 @@ end =  1.
 
 # Declare order of the basis in the elements
 # Test problem will consider order 0 - a finite volume scheme
-order_basis = 2
+order_basis = 0
 quad_degree = 20
 # Declare flux indicator function
 theta = Constant(0.6)
@@ -188,8 +188,8 @@ while (t < end):
     # Output results
     outfile.write(u, rho, time =t)
     
-    velocity.append(Function(u))
-    #density.append(Function(rho))
+    #velocity.append(Function(u))
+    density.append(Function(rho))
     
     # Assign output as previous timestep for next time update
     u0.assign(u)
@@ -209,7 +209,7 @@ while (t < end):
 
 
 try:
- plot(velocity)
+ plot(density)
 except Exception as e:
  warning("Cannot plot figure. Error msg: '%s'" % e.message)
 try:
