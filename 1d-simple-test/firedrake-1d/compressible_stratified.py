@@ -68,7 +68,7 @@ rho_0_project.interpolate(Expression( "exp(-3.0*x[0])" ))
 
 
 # Initial conditions
-# Here time n = 0
+
 
 # Function space
 w_n = Function(W)
