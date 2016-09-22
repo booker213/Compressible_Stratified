@@ -2,7 +2,7 @@ clc
 close all
 
 
-T = dlmread('quad_16_1000.txt');
+T = dlmread('quintic.txt');
 figure 
 set(gca,'fontsize', 18)
 semilogy( T(:,1), T(:,2))

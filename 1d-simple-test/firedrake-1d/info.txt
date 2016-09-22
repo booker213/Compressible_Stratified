@@ -1,0 +1,7 @@
+#A = assemble(a, nest=False)
+
+#vals = A.M.values
+
+#print vals
+
+Use this to access the values of the monolithic matrix a
