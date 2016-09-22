@@ -16,7 +16,7 @@ except:
 # Create mesh
 # Current mesh is a unit line  with Nx elements.
 
-Nx = 4
+Nx = 16
 mesh = UnitIntervalMesh(Nx)
 
 # Declare timestep
@@ -26,10 +26,10 @@ dt = 1./( pow(Nx,2))
 # Period of waves considered in test is 1s
 # We will consider 3 periods initially
 t = 0.
-end =  10.
+end =  3.
 
 # Declare order of the basis in the elements
-order_basis = 6
+order_basis = 2
 
 # The projection of the variational derivatives requires a higher degree
 # of quadrature than the automatic procedure provides. Here we define 
@@ -157,7 +157,7 @@ a = derivative(L0 - 0.5 * dt * ( L1  + L2 ), w_n) + a1 + a2
 
 
 # Storage for visualisation
-outfile = File('./Results/compressible_stratified_results.pvd')
+outfile = File('./Results/compressible_stratified_results.pvd',project_output=True)
 
 # Use .split() to access the data.
 u_n, rho_n, dHdu_n, dHdrho_n = w_n.split()
