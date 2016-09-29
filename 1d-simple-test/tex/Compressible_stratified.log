@@ -1,20 +1,16 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2015.12.11)  25 AUG 2016 13:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.6.19)  29 SEP 2016 10:33
 entering extended mode
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **Compressible_stratified.tex
 (./Compressible_stratified.tex
-LaTeX2e <2005/12/01>
-Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, arabic, basque, bulgarian, coptic, welsh, czech, slovak, german, ng
-erman, danish, esperanto, spanish, catalan, galician, estonian, farsi, finnish,
- french, greek, monogreek, ancientgreek, croatian, hungarian, interlingua, ibyc
-us, indonesian, icelandic, italian, latin, mongolian, dutch, norsk, polish, por
-tuguese, pinyin, romanian, russian, slovenian, uppersorbian, serbian, swedish, 
-turkish, ukenglish, ukrainian, loaded.
-(/usr/share/texmf/tex/latex/base/article.cls
-Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
-(/usr/share/texmf/tex/latex/base/size11.clo
-File: size11.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+LaTeX2e <2015/01/01>
+Babel <3.9l> and hyphenation patterns for 79 languages loaded.
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
 \c@section=\count80
@@ -28,41 +24,47 @@ File: size11.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/share/texmf/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2000/07/18 v2.13 AMS math features
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsmath/amsmath.
+sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
 \@mathmargin=\skip43
 
 For additional information on amsmath, use the `?' option.
-(/usr/share/texmf/tex/latex/amsmath/amstext.sty
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsmath/amstext.
+sty
 Package: amstext 2000/06/29 v2.01
 
-(/usr/share/texmf/tex/latex/amsmath/amsgen.sty
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsmath/amsgen.s
+ty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks14
 \ex@=\dimen103
 ))
-(/usr/share/texmf/tex/latex/amsmath/amsbsy.sty
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsmath/amsbsy.s
+ty
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen104
 )
-(/usr/share/texmf/tex/latex/amsmath/amsopn.sty
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsmath/amsopn.s
+ty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count87
-LaTeX Info: Redefining \frac on input line 211.
+LaTeX Info: Redefining \frac on input line 210.
 \uproot@=\count88
 \leftroot@=\count89
-LaTeX Info: Redefining \overline on input line 307.
+LaTeX Info: Redefining \overline on input line 306.
 \classnum@=\count90
 \DOTSCASE@=\count91
-LaTeX Info: Redefining \ldots on input line 379.
-LaTeX Info: Redefining \dots on input line 382.
-LaTeX Info: Redefining \cdots on input line 467.
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
 \Mathstrutbox@=\box26
 \strutbox@=\box27
 \big@size=\dimen105
-LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 \macc@depth=\count92
 \c@MaxMatrixCols=\count93
 \dotsspace@=\muskip10
@@ -83,57 +85,77 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \multlinegap=\skip44
 \multlinetaggap=\skip45
 \mathdisplay@stack=\toks18
-LaTeX Info: Redefining \[ on input line 2666.
-LaTeX Info: Redefining \] on input line 2667.
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
 )
-(/usr/share/texmf/tex/latex/amsfonts/amssymb.sty
-Package: amssymb 2002/01/22 v2.2d
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsfonts/amssymb
+.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
 
-(/usr/share/texmf/tex/latex/amsfonts/amsfonts.sty
-Package: amsfonts 2001/10/25 v2.2f
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsfonts/amsfont
+s.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
-(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
-(/usr/share/texmf/tex/latex/tools/verbatim.sty
-Package: verbatim 2003/08/22 v1.5q LaTeX2e package for verbatim enhancements
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/tools/verbatim.s
+ty
+Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
 \every@verbatim=\toks19
 \verbatim@line=\toks20
 \verbatim@in@stream=\read1
 )
-(/usr/share/texmf/tex/latex/graphics/graphicx.sty
-Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/graphics/graphic
+x.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf/tex/latex/graphics/keyval.sty
-Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/graphics/keyval.
+sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks21
 )
-(/usr/share/texmf/tex/latex/graphics/graphics.sty
-Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/graphics/graphic
+s.sty
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texmf/tex/latex/graphics/trig.sty
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/graphics/trig.st
+y
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/share/texmf/tex/latex/config/graphics.cfg
-File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/latexconfig/grap
+hics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: pdftex.def on input line 90.
+Package graphics Info: Driver file: pdftex.def on input line 94.
 
-(/usr/share/texmf/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2007/01/08 v0.04d Graphics/color for pdfTeX
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdfte
+x.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/infwa
+rerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcm
+ds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
 \Gread@gobject=\count99
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
-(/usr/share/texmf/tex/latex/psfrag/psfrag.sty
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/psfrag/psfrag.st
+y
 Package: psfrag 1998/04/11 v3.04 PSfrag (MCG)
 \pfg@pcount=\count100
 \pfg@scount=\count101
 \pfg@temp=\write3
 )
-(/usr/share/texmf/tex/latex/listings/listings.sty
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/listings/listing
+s.sty
 \lst@mode=\count102
 \lst@gtempboxa=\box28
 \lst@token=\toks22
@@ -145,25 +167,24 @@ Package: psfrag 1998/04/11 v3.04 PSfrag (MCG)
 \lst@width=\dimen116
 \lst@newlines=\count106
 \lst@lineno=\count107
-\c@lstlisting=\count108
 \lst@maxwidth=\dimen117
 
-(/usr/share/texmf/tex/latex/listings/lstpatch.sty
-File: lstpatch.sty 2004/10/17 1.3b (Carsten Heinz)
-)
-(/usr/share/texmf/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2004/09/07 1.3 (Carsten Heinz)
-\c@lstnumber=\count109
-\lst@skipnumbers=\count110
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/listings/lstmisc
+.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count108
+\lst@skipnumbers=\count109
 \lst@framebox=\box29
 )
-(/usr/share/texmf/tex/latex/listings/listings.cfg
-File: listings.cfg 2004/09/05 1.3 listings configuration
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/listings/listing
+s.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
-Package: listings 2004/10/17 1.3b (Carsten Heinz)
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
 
-(/usr/share/texmf/tex/latex/booktabs/booktabs.sty
-Package: booktabs 2005/03/16 v1.6180 publication quality tables
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/booktabs/booktab
+s.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \heavyrulewidth=\dimen118
 \lightrulewidth=\dimen119
 \cmidrulewidth=\dimen120
@@ -174,30 +195,33 @@ Package: booktabs 2005/03/16 v1.6180 publication quality tables
 \cmidrulesep=\dimen125
 \cmidrulekern=\dimen126
 \defaultaddspace=\dimen127
-\@cmidla=\count111
-\@cmidlb=\count112
+\@cmidla=\count110
+\@cmidlb=\count111
 \@aboverulesep=\dimen128
 \@belowrulesep=\dimen129
-\@thisruleclass=\count113
-\@lastruleclass=\count114
+\@thisruleclass=\count112
+\@lastruleclass=\count113
 \@thisrulewidth=\dimen130
 )
-(/usr/share/texmf/tex/latex/caption/caption.sty
-Package: caption 2007/01/07 v3.0k Customising captions (AR)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/caption/caption.
+sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
 
-(/usr/share/texmf/tex/latex/caption/caption3.sty
-Package: caption3 2007/01/07 v3.0k caption3 kernel (AR)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/caption/caption3
+.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
 \captionmargin=\dimen131
-\captionmarginx=\dimen132
+\captionmargin@=\dimen132
 \captionwidth=\dimen133
-\captionindent=\dimen134
-\captionparindent=\dimen135
-\captionhangindent=\dimen136
+\caption@tempdima=\dimen134
+\caption@indent=\dimen135
+\caption@parindent=\dimen136
+\caption@hangindent=\dimen137
 )
-Package caption Info: listings package v1.2 (or newer) detected on input line 3
-38.
-)
-(./Compressible_stratified.aux)
+\c@ContinuedFloat=\count114
+Package caption Info: listings package is loaded.
+) (./Compressible_stratified.aux)
 \openout1 = `Compressible_stratified.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
@@ -213,50 +237,103 @@ LaTeX Font Info:    ... okay on input line 27.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
 LaTeX Font Info:    ... okay on input line 27.
 
-(/usr/share/texmf/tex/latex/ragged2e/ragged2e.sty
-Package: ragged2e 2003/03/25 v2.04 ragged2e Package (MS)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/context/base/supp-pdf.
+mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count115
+\scratchdimen=\dimen138
+\scratchbox=\box30
+\nofMPsegments=\count116
+\nofMParguments=\count117
+\everyMPshowfont=\toks23
+\MPscratchCnt=\count118
+\MPscratchDim=\dimen139
+\MPnumerator=\count119
+\makeMPintoPDFobject=\count120
+\everyMPtoPDFconversion=\toks24
+)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/pdfte
+xcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
 
-(/usr/share/texmf/tex/latex/everysel/everysel.sty
-Package: everysel 1999/06/08 v1.03 EverySelectfont Package (MS)
-LaTeX Info: Redefining \selectfont on input line 125.
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/iflua
+tex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
 )
-\CenteringLeftskip=\skip46
-\RaggedLeftLeftskip=\skip47
-\RaggedRightLeftskip=\skip48
-\CenteringRightskip=\skip49
-\RaggedLeftRightskip=\skip50
-\RaggedRightRightskip=\skip51
-\CenteringParfillskip=\skip52
-\RaggedLeftParfillskip=\skip53
-\RaggedRightParfillskip=\skip54
-\JustifyingParfillskip=\skip55
-\CenteringParindent=\skip56
-\RaggedLeftParindent=\skip57
-\RaggedRightParindent=\skip58
-\JustifyingParindent=\skip59
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf
+.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopd
+f-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.
+sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/kvdef
+inekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptio
+ns.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/kvset
+keys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/generic/oberdiek/etexc
+mds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/latexconfig/epst
+opdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+\c@lstlisting=\count121
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Try loading font information for U+msa on input line 29.
 
-(/usr/share/texmf/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 29.
 
-(/usr/share/texmf/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+(/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 47.
-
-(/usr/share/texmf/tex/latex/base/omscmr.fd
-File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+ (/home/cserv1_a/apps/install/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 47.
  [1
 Non-PDF special ignored!
 
-{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-[2] [3] [4]
+{/home/cserv1_a/apps/install/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdf
+tex.map}] [2] [3] [4]
 Overfull \hbox (49.55432pt too wide) detected at line 232
 [] []
  []
@@ -266,42 +343,36 @@ Overfull \hbox (43.71791pt too wide) detected at line 240
 [] []
  []
 
-[5]
-! Missing { inserted.
-<inserted text> 
-                {
-l.270 \end{aligned}
-                   
-I've put in what seems to be necessary to fix
-the current column of the current alignment.
-Try to go on, since this might almost work.
-
-
-Overfull \hbox (1.19662pt too wide) detected at line 271
-[] []
- []
-
-[6] [7] (./Compressible_stratified.aux) ) 
+[5] [6] [7] (./Compressible_stratified.aux) ) 
 Here is how much of TeX's memory you used:
- 3291 strings out of 256214
- 44988 string characters out of 1916999
- 114944 words of memory out of 1500000
- 6551 multiletter control sequences out of 10000+200000
- 11053 words of font info for 42 fonts, out of 1200000 for 2000
- 645 hyphenation exceptions out of 8191
- 35i,11n,38p,554b,218s stack positions out of 5000i,500n,6000p,200000b,15000s
-</usr/share/texmf/fonts/type1/bluesky/
-cm/cmbx12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/t
-exmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/bluesky/cm
-/cmmi6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf
-/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr1
-2.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb></usr/share/texmf/font
-s/type1/bluesky/cm/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb><
-/usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type
-1/bluesky/cm/cmsy8.pfb></usr/share/texmf/fonts/type1/bluesky/ams/msbm10.pfb>
-Output written on Compressible_stratified.pdf (7 pages, 100155 bytes).
+ 4759 strings out of 493089
+ 71912 string characters out of 6127232
+ 152363 words of memory out of 5000000
+ 8189 multiletter control sequences out of 15000+600000
+ 11044 words of font info for 42 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 38i,11n,38p,554b,219s stack positions out of 5000i,500n,10000p,200000b,80000s
+</home/cserv1_a/apps/install/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></home/cserv1_a/ap
+ps/install/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
+home/cserv1_a/apps/install/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmmi10.pfb></home/cserv1_a/apps/install/texlive/2015/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmmi6.pfb></home/cserv1_a/apps/install/texlive/2015/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi8.pfb></home/cserv1_a/apps/install/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/cserv1_a/apps
+/install/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></hom
+e/cserv1_a/apps/install/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr17.pfb></home/cserv1_a/apps/install/texlive/2015/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmr6.pfb></home/cserv1_a/apps/install/texlive/2015/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmr8.pfb></home/cserv1_a/apps/install/texlive/2015
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/cserv1_a/apps/inst
+all/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></home/cse
+rv1_a/apps/install/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/
+msbm10.pfb>
+Output written on Compressible_stratified.pdf (7 pages, 162428 bytes).
 PDF statistics:
- 78 PDF objects out of 1000 (max. 8388607)
- 0 named destinations out of 1000 (max. 131072)
+ 80 PDF objects out of 1000 (max. 8388607)
+ 57 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

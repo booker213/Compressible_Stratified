@@ -266,12 +266,36 @@ Counting the contributions to element $Nz$ yields
 \begin{equation}
 \begin{aligned}
 \frac{d F}{d t}&=\frac{\partial F}{\partial (\rho_0 W)_{Nz}}\frac{1}{\Delta z}\bigg [    \Delta z R_{Nz} \frac{1}{\rho^{Nz}_{0{{}_h}}} \frac{d\rho^{Nz}_{0{{}_h}}}{dz}  + R_{Nz-1} \theta \frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz-1}} - R_{Nz} \theta\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz}}       \bigg]\\
-&+\frac{\partial F}{\partial R_{Nz}} \frac{1}{\Delta z}\bigg [    \Delta z (\rho_0 W)_{Nz} \frac{1}{\rho^{}Nz}_{0{{}_h}}} \frac{d\rho^{Nz}_{0{{}_h}}}{dz} +   (\rho_0 W)_{Nz-1}(1-\theta)\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz-1}}  + (\rho_0 W)_{Nz} \theta\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz}}          \bigg].
+&+\frac{\partial F}{\partial R_{Nz}} \frac{1}{\Delta z}\bigg [    \Delta z (\rho_0 W)_{Nz} \frac{1}{\rho^{Nz}_{0{{}_h}}} \frac{d\rho^{Nz}_{0{{}_h}}}{dz} +   (\rho_0 W)_{Nz-1}(1-\theta)\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz-1}}  + (\rho_0 W)_{Nz} \theta\frac{\rho_0^{\partial Nz - \frac{1}{2}}}{\rho_{0{{}_h}}^{Nz}}          \bigg].
 \end{aligned}
 \end{equation}
 
 
 
+
+\section{Firedrake Implementation}
+
+As mentioned previously, we use the Poisson bracket \eqref{eqns:fdpb} for our Firedrake implementation as we do not need to explicitly calculate the derivatives of the background stratification. 
+
+ \begin{equation}
+\begin{aligned}
+ \{ \mathcal{F},  \mathcal{H}\} = &  \sum_e \int_e - \frac{\partial}{\partial z}(\frac{\delta  \mathcal{H}}{\delta \rho_h}\rho_0 ) \frac{\delta  \mathcal{F}}{\delta u_h} + \frac{\partial}{\partial z}(\frac{\delta  \mathcal{F}}{\delta \rho_h}\rho_0)\frac{\delta  \mathcal{H}}{\delta (\rho_0 w)_h} \text{ d}e \\
+ &+ \sum_{\partial e}\int_{\partial e } \bigg(  \frac{\delta  \mathcal{H}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{H}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{F}}{\delta  (\rho_0 w)_h^+} \bigg)\\
+ & - \bigg(  \frac{\delta  \mathcal{F}}{\delta \rho_h^-}\rho_0^- -\frac{\delta  \mathcal{F}}{\delta \rho_h^+}\rho_0^+\bigg)\bigg ( (1-\theta) \frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^-}+ \theta\frac{\delta  \mathcal{H}}{\delta  (\rho_0 w)_h^+} \bigg) \text{ d} \Gamma.
+ \end{aligned}
+ \end{equation}
+
+ - Relate that the Hamiltonian derivatives should be used as they belong in the function space due to rho0 terms
+ 
+ - Note that the derivatives and physical variables are only weakly equal not strongly.
+ 
+ - Derivatives are essentially a Galerkin projection onto the Finite element space, and thus has to be included as part of the weak form.
+ 
+ - Augmented weak form system.
+ 
+ - Mention automatic quadrature and increasing order for variational derivatives.
+ 
+ 
 \section{Timestepper}
 \subsection{Implicit Midpoint rule}
 An implicit midpoint rule is used, as it is a known property that the scheme preserves any property of the underlying ODE upto a quadratic order. This will be sufficient for our scheme to preserve its conservation of energy.
@@ -291,14 +315,22 @@ An implicit midpoint rule is used, as it is a known property that the scheme pre
 %
 %The Stormer-Verlet scheme does not conserve the exact energy of the ODE system, it does however conserve a shadow energy that is bounded. As the Stormer-Verlet scheme is order 2, we would expect that this band of energy to also be an order 2 property. 
 
+
 \section{Results}
 
 \subsection{Energy}
 
+- Matlab Straight line
+- Matlab - oscillatory energy
+
+- Firedrake energy 1d and 2d
 
 \subsection{ Error in density and velocity}
 
-
+ - Tables
+ - Convergence
+ 
+ - Conclusion
 
 
 
